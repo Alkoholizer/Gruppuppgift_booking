@@ -25,7 +25,7 @@ namespace Gruppuppgift_booking.filer
 		/// Läs in en fil från en specificerad path. Syntax: LäsFil("Fil.txt", "Mapp1", "Mapp2")
 		/// </summary>
 		/// <param name="filNamn">Namnet på filen, måste ha fil extension med!"</param>
-		/// <param name="filPaths">Pathen till filen (Mappar). Använder sig av specifika plater med hjälp av StandardFilPath</param>
+		/// <param name="filPaths">Pathen till filen (Mappar). Använder sig av specifika platser med hjälp av StandardFilPath</param>
 		/// <returns>Alla rader av text från filen.</returns>
 		public static string[] LäsFil(string filNamn, params string[] filPaths)
 		{
@@ -48,7 +48,7 @@ namespace Gruppuppgift_booking.filer
 		/// </summary>
 		/// <param name="data">Din data i formet som en string array.</param>
 		/// <param name="filNamn">Namnet på filen du vill skapa.</param>
-		/// <param name="filPaths">Pathen till filen (Mappar). Använder sig av specifika plater med hjälp av StandardFilPath</param>
+		/// <param name="filPaths">Pathen till filen (Mappar). Använder sig av specifika platser med hjälp av StandardFilPath</param>
 		public static void SparaFil(string[] data, string filNamn, params string[] filPaths)
 		{
 			string path = Path.Combine(StandardFilPath, Path.Combine(filPaths));
