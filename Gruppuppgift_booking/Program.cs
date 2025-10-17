@@ -4,10 +4,6 @@
     { 
     
     }
-    static class methodRepository //En klass för att samla våra metoder.
-    { 
-    
-    }
     internal class Program
     {
         static void Main(string[] args)
