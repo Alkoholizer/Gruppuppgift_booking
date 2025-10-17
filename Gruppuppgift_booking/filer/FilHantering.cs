@@ -12,7 +12,7 @@ namespace Gruppuppgift_booking.filer
 
 		public static void Init()
 		{
-			// Om vi är på debug versionen, använg lokala mappar i våra dokument.
+			// Om vi är på debug versionen, använd lokala mappar i våra dokument.
 			#if DEBUG
 				StandardFilPath = Path.Combine(Environment.GetFolderPath
 					(Environment.SpecialFolder.MyDocuments), "Net-Utvecklare", "Booking");
@@ -22,7 +22,7 @@ namespace Gruppuppgift_booking.filer
 		}
 
 		/// <summary>
-		/// Läs in en fil från en specificerad path. Syntax: LäsFil("Fil.txt", ""Mapp1", "Mapp2")
+		/// Läs in en fil från en specificerad path. Syntax: LäsFil("Fil.txt", "Mapp1", "Mapp2")
 		/// </summary>
 		/// <param name="filNamn">Namnet på filen, måste ha fil extension med!"</param>
 		/// <param name="filPaths">Pathen till filen (Mappar). Använder sig av specifika plater med hjälp av StandardFilPath</param>
@@ -30,12 +30,12 @@ namespace Gruppuppgift_booking.filer
 		public static string[] LäsFil(string filNamn, params string[] filPaths)
 		{
 			string path = Path.Combine(StandardFilPath, Path.Combine(filPaths));
-			if (Directory.Exists(path))
+			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 
 			string pathTillFil = Path.Combine(path, filNamn);
 
-			if (File.Exists(pathTillFil))
+			if (!File.Exists(pathTillFil))
 			{
 				throw new FileNotFoundException($"Kunde ej hitta filen \"{filNamn}\" på platsen: {path}");
 			}
@@ -52,7 +52,7 @@ namespace Gruppuppgift_booking.filer
 		public static void SparaFil(string[] data, string filNamn, params string[] filPaths)
 		{
 			string path = Path.Combine(StandardFilPath, Path.Combine(filPaths));
-			if (Directory.Exists(path))
+			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 
 			string pathTillFil = Path.Combine(path, filNamn);
