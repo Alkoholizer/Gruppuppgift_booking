@@ -1,4 +1,6 @@
-﻿namespace Gruppuppgift_booking
+﻿using Gruppuppgift_booking.filer;
+
+namespace Gruppuppgift_booking
 {
     interface IBookable //Den abstrakta Bookable-klassen, som skall implementeras som returtyp vid bokning.
     { 
@@ -8,6 +10,8 @@
     {
         static void Main(string[] args)
         {
+            FilHantering.Init();
+
             int menuChoice;
             Console.WriteLine("Välkommen till bokningssystemet!");
             Console.WriteLine();
