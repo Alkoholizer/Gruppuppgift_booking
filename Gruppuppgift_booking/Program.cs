@@ -42,7 +42,7 @@
                     break;
                 case 2:
                     Console.WriteLine("1. Lista alla salar.");
-                    Console.WriteLine("1. Skapa ny lokal.");
+                    Console.WriteLine("2. Skapa ny lokal.");
                     break;
                 default:
                     Console.WriteLine("Ogiltigt val.");
