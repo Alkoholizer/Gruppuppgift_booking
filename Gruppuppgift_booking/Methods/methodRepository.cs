@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Gruppuppgift_booking.lokaler
+namespace Gruppuppgift_booking.Methods
 {
-    public class Lokal
+    static class methodRepository
     {
+
     }
 }
