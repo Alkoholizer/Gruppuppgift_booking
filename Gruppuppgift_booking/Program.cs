@@ -4,18 +4,6 @@
     { 
     
     }
-    class Lokal //Huvudklassen för lokaler, med delade egenskaper
-    { 
-    
-    }
-    class Grupprum : Lokal //Underklass som ärver från Lokal-klassen, med unika egenskaper för just Grupprum
-    { 
-    
-    }
-    class Sal : Lokal //Samma sak, fast med egenskaper för salar.
-    {
-
-    }
     static class methodRepository //En klass för att samla våra metoder.
     { 
     
