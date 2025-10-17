@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gruppuppgift_booking.lokaler
 {
-    internal class Lokal
+    public class Lokal
     {
     }
 }
