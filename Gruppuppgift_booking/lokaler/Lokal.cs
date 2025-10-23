@@ -8,5 +8,12 @@ namespace Gruppuppgift_booking.lokaler
 {
     public class Lokal
     {
+        public string Namn;
+        public int Platser;
+        public Lokal (string Namn, int Platser)
+        {
+            Namn = Namn;
+            Platser = Platser;
+        }
     }
 }
