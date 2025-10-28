@@ -46,7 +46,7 @@ namespace Gruppuppgift_booking.lokaler
 
             }
             Grupprum GR = new Grupprum(namn, platser, grupprumNr, soffa);
-            Lokal.sparaGrupprum.add(GR);
+            sparaGrupprum.Add(GR);
         }
     }
 }
