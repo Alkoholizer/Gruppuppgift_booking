@@ -9,10 +9,10 @@ namespace Gruppuppgift_booking.lokaler
     {
         public string Namn;
         public int Platser;
-        public Lokal (string Namn, int Platser)
+        public Lokal (string namn, int platser)
         {
-            Namn = Namn;
-            Platser = Platser;
+            Namn = namn;
+            Platser = platser;
         }
         public List<Grupprum> sparaGrupprum = new List<Grupprum>();
         public List<Sal> sparaSalar = new List<Sal>();

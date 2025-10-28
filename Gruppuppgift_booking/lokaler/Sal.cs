@@ -8,29 +8,30 @@ namespace Gruppuppgift_booking.lokaler
 {
     public class Sal : Lokal
     {
-        public int salNummer;
+        public int SalNummer;
         public bool Projektor;
-        public Sal(string Namn, int Platser, int salNummer, bool Projektor) : base(Namn, Platser)
+        public Sal(string namn, int platser, int salNummer, bool projektor) : base(namn, platser)
         {
-            salNummer = salNummer;
-            Projektor = Projektor;
+            SalNummer = salNummer;
+            Projektor = projektor;
         }
-        public void salMaker()
+        public void SalMaker()
         {
             Console.Clear();
             Console.WriteLine("Ange ett namn på salen.");
             string namn = Console.ReadLine();
+
             Console.WriteLine("Ange antal sittplatser i salen.");
-            int platser;
-            Int32.TryParse(Console.ReadLine(), out platser);
+            int.TryParse(Console.ReadLine(), out int platser);
+
             Console.WriteLine("Ange ett indexeringsnummer för salen.");
-            int salNr;
-            Int32.TryParse(Console.ReadLine(), out salNr);
+            int.TryParse(Console.ReadLine(), out int salNr);
+
             Console.WriteLine("Har salen en projektor? Y/N?");
             string pick = Console.ReadLine();
-            string Pick = pick.ToUpper();
+            string _pick = pick.ToUpper();
             bool projektor;
-            switch (Pick)
+            switch (_pick)
             {
                 case "Y":
                     projektor = true;

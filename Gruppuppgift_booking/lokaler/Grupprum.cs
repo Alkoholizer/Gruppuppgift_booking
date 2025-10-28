@@ -8,29 +8,30 @@ namespace Gruppuppgift_booking.lokaler
 {
     public class Grupprum : Lokal
     {
-        public int grupprumNummer;
+        public int GrupprumNummer;
         public bool Soffa;
-        public Grupprum(string Namn, int Platser, int grupprumNummer, bool Soffa) : base(Namn, Platser)
+        public Grupprum(string namn, int platser, int grupprumNummer, bool soffa) : base(namn, platser)
         {
-            grupprumNummer = grupprumNummer;
-            Soffa = Soffa;
+            GrupprumNummer = grupprumNummer;
+            Soffa = soffa;
         }
-        public void grupprumMaker()
+        public void GrupprumMaker()
         {
             Console.Clear();
             Console.WriteLine("Ange ett namn på grupprummet.");
             string namn = Console.ReadLine();
+
             Console.WriteLine("Ange antal sittplatser i grupprummet.");
-            int platser;
-            Int32.TryParse(Console.ReadLine(), out platser);
+            int.TryParse(Console.ReadLine(), out int platser);
+
             Console.WriteLine("Ange ett indexeringsnummer för grupprummet.");
-            int grupprumNr;
-            Int32.TryParse(Console.ReadLine(), out grupprumNr);
+            int.TryParse(Console.ReadLine(), out int grupprumNr);
+
             Console.WriteLine("Har grupprummet en soffa? Y/N?");
             string pick = Console.ReadLine();
-            string Pick = pick.ToUpper();
+            string _pick = pick.ToUpper();
             bool soffa;
-            switch (Pick)
+            switch (_pick)
             {
                 case "Y":
                     soffa = true;
