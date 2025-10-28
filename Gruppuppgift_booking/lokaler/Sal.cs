@@ -45,8 +45,8 @@ namespace Gruppuppgift_booking.lokaler
                     break;
 
             }
-            Grupprum GR = new Grupprum(namn, platser, salNr, projektor);
-
+            Sal S = new Sal(namn, platser, salNr, projektor);
+            sparaSalar.Add(S);
         }
     }
 }
