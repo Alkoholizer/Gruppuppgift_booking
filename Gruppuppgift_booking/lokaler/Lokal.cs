@@ -24,6 +24,7 @@ namespace Gruppuppgift_booking.lokaler
             {
                 Console.WriteLine(bokning);
             }
+            
 
             // Else utifall lokal inte finns/bokad?
         }
@@ -60,7 +61,8 @@ namespace Gruppuppgift_booking.lokaler
             Lokal.VisaBokningar();
         }
     }
-}         
-    
+    // Kommentera ev flera metoder som behövs
+}
+
 
 
