@@ -15,5 +15,7 @@ namespace Gruppuppgift_booking.lokaler
             Namn = Namn;
             Platser = Platser;
         }
+        public List<Grupprum> sparaGrupprum = new List<Grupprum>();
+        public List<Sal> sparaSalar = new List<Sal>();
     }
 }
