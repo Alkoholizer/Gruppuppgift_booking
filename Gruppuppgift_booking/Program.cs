@@ -3,11 +3,16 @@
 namespace Gruppuppgift_booking
 {
     interface IBookable //Den abstrakta Bookable-klassen, som skall implementeras som returtyp vid bokning.
-    { 
-    
+    {
+        int? NewBooking(string costumerName, DateTime startTime, DateTime endTime);
+
+        bool CancelBooking(int bookingId);
+
+        bool CheckBookingStatus(int bookingId);
     }
     internal class Program
     {
+       
         static void Main(string[] args)
         {
             FilHantering.Init();
