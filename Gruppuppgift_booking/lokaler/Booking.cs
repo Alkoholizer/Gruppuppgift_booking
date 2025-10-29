@@ -23,7 +23,7 @@ namespace Gruppuppgift_booking.lokaler
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
 
-        public override string ToString()
+        public string GetBookingData()
         {
             return $"[{ID}]: \"{CustomerName}\" {StartTime} to {EndTime}";
         }
