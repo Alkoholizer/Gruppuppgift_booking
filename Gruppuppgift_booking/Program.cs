@@ -1,4 +1,5 @@
 ﻿using Gruppuppgift_booking.filer;
+using Gruppuppgift_booking.Methods;
 
 namespace Gruppuppgift_booking
 {
@@ -12,27 +13,33 @@ namespace Gruppuppgift_booking
     }
     internal class Program
     {
-       
+
         static void Main(string[] args)
         {
             FilHantering.Init();
 
-            Console.WriteLine("Välkommen till bokningssystemet!");
-            Console.WriteLine();
-            Console.WriteLine("Mata in en siffra för att välja.");
-            Console.WriteLine("1. Hantera bokningar.");
-            Console.WriteLine("2. Hantera lokaler.");
+            Start();
+        }
 
-            switch(MenyVal(2))
+        public static void Start(int menuIndex = -1)
+        {
+            int val = menuIndex;
+            if (val >= 0)
+            {
+                Console.WriteLine
+                (
+                    "Välkommen till bokningssystemet!\n" +
+                    "Mata in en siffra för att välja." +
+                    "\n1: Hantera bokningar " +
+                    "\n2: Hantera lokaler"
+                );
+                val = MenyVal(2, true);
+            }
+
+            switch(val)
             {
                 case 1: ManageBookings(); break;
-                case 2:
-                    Console.WriteLine("1. Lista alla salar.");
-                    Console.WriteLine("2. Skapa ny lokal.");
-                    break;
-                default:
-                    Console.WriteLine("Ogiltigt val.");
-                    break;
+                case 2: HandleRooms(); break;
             }
 
             void ManageBookings()
@@ -41,20 +48,56 @@ namespace Gruppuppgift_booking
                                 "\n2: Lista alla bokningar " +
                                 "\n3: Uppdatera bokning " +
                                 "\n4: Ta bort en bokning " +
-                                "\n5: Lista bokningar för år");
-                int val = MenyVal(5);
+                                "\n5: Lista bokningar för år" +
+                                "\n0: Gå tillbaka");
+
+                switch (MenyVal(5))
+                {
+                    case 1: ManageBookings(); break;
+                    case 2: HandleRooms(); break;
+                    case 0: Start(); Console.Clear(); break;
+                }
             }
             void HandleRooms()
             {
-
+                Console.WriteLine("1: Lista alla lokaler " +
+                                "\n2: Skapa ny lokal");
             }
 
-            int MenyVal(int max)
+            int MenyVal(int max, bool canExit = false)
             {
-                Console.Write($"Menyval (1-{max}): ");
             Redo:
-                if (!int.TryParse(Console.ReadLine(), out int val))
+
+                Console.WriteLine();
+                if (canExit)
+                    Console.WriteLine("Skriv \"avbryt\" för att avsluta.");
+                Console.Write($"Menyval (1-{max}): ");
+                
+                string? line = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(line))
                 {
+                    MethodRepository.PrintColor("Ogiltigt inmatning!", ConsoleColor.Red);
+                    goto Redo;
+                }
+
+                line = line.ToLower();
+
+                if (line == "avbryt" && canExit)
+                {
+                    Environment.Exit(0);
+                    return 0;
+                }
+
+                if (!int.TryParse(line, out int val))
+                {
+                    MethodRepository.PrintColor("Ogiltigt inmatning!", ConsoleColor.Red);
+                    goto Redo;
+                }
+
+                if (val > max)
+                {
+                    MethodRepository.PrintColor($"Menyvalet måste vara mellan 1-{max}", ConsoleColor.Red);
                     goto Redo;
                 }
 

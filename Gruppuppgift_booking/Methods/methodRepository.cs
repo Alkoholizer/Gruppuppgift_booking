@@ -15,7 +15,7 @@ namespace Gruppuppgift_booking.Methods
         /// <param name="text">Strängen du vill skriva ut.</param>
         /// <param name="färg">Färgen du vill använda.</param>
         /// <param name="somNyLinje">Om strängen ska vara på en ny rad eller på samma rad.</param>
-        public static void PrintColor(string text, ConsoleColor färg = ConsoleColor.Gray, bool somNyLinje = true)
+        public static void PrintColor(this string text, ConsoleColor färg = ConsoleColor.Gray, bool somNyLinje = true)
         {
             var oldCol = Console.ForegroundColor;
             Console.ForegroundColor = färg;
