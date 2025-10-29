@@ -17,22 +17,15 @@ namespace Gruppuppgift_booking
         {
             FilHantering.Init();
 
-            int menuChoice;
             Console.WriteLine("Välkommen till bokningssystemet!");
             Console.WriteLine();
             Console.WriteLine("Mata in en siffra för att välja.");
             Console.WriteLine("1. Hantera bokningar.");
             Console.WriteLine("2. Hantera lokaler.");
-            Int32.TryParse(Console.ReadLine(), out menuChoice);
-            switch(menuChoice)
+
+            switch(MenyVal(2))
             {
-                case 1:
-                    Console.WriteLine("1. Skapa ny bokning.");
-                    Console.WriteLine("2. Lista alla bokningar.");
-                    Console.WriteLine("3. Uppdatera bokning.");
-                    Console.WriteLine("4. Ta bort en bokning.");
-                    Console.WriteLine("5. Lista bokningar för år:");
-                    break;
+                case 1: ManageBookings(); break;
                 case 2:
                     Console.WriteLine("1. Lista alla salar.");
                     Console.WriteLine("2. Skapa ny lokal.");
@@ -40,6 +33,38 @@ namespace Gruppuppgift_booking
                 default:
                     Console.WriteLine("Ogiltigt val.");
                     break;
+            }
+
+            void ManageBookings()
+            {
+                Console.WriteLine("1: Skapa ny bokning " +
+                                "\n2: Lista alla bokningar " +
+                                "\n3: Uppdatera bokning " +
+                                "\n4: Ta bort en bokning " +
+                                "\n5: Lista bokningar för år");
+                int val = MenyVal(5);
+            }
+            void HandleRooms()
+            {
+
+            }
+
+            int MenyVal(int max)
+            {
+                Console.Write($"Menyval (1-{max}): ");
+            Redo:
+                if (!int.TryParse(Console.ReadLine(), out int val))
+                {
+                    goto Redo;
+                }
+
+                switch(val)
+                {
+                    default: break;
+                }
+
+                return val;
+
             }
 
         }
