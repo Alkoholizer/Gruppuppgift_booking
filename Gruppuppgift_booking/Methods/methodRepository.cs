@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,13 @@ namespace Gruppuppgift_booking.Methods
             else Console.Write(text);
 
             Console.ForegroundColor = oldCol;
+        }
+        public static void NullCheck(string input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
         }
     }
 }

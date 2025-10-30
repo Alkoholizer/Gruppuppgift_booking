@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gruppuppgift_booking.Methods;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,8 @@ namespace Gruppuppgift_booking.lokaler
             Console.Clear();
             Console.WriteLine("Ange ett namn på salen.");
             string namn = Console.ReadLine();
+            MethodRepository.NullCheck(namn);
+            UniqueCheck(namn);
 
             Console.WriteLine("Ange antal sittplatser i salen.");
             int.TryParse(Console.ReadLine(), out int platser);
@@ -29,6 +32,7 @@ namespace Gruppuppgift_booking.lokaler
 
             Console.WriteLine("Har salen en projektor? Y/N?");
             string pick = Console.ReadLine();
+            MethodRepository.NullCheck(pick);
             string _pick = pick.ToUpper();
             bool projektor;
             switch (_pick)
