@@ -1,12 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using Gruppuppgift_booking.Methods;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Gruppuppgift_booking.lokaler
 {
+    public record LokalData
+    (
+        LokalTyp Typ,
+
+        string Namn,
+        double Area,
+
+        int Nummer,
+        bool HarSoffa,
+        bool HarProjector
+    );
+
     public class Lokal
     {
+        private static List<Booking> bokningar = [];
+        public static readonly List<Lokal> lokaler = [];
+
+        public Lokal(LokalData data)
+        {
+            Namn = data.Namn;
+            Typ = data.Typ;
+        }
+
         public string Namn;
         public int Platser;
         public Lokal(string namn, int platser)
@@ -16,26 +38,8 @@ namespace Gruppuppgift_booking.lokaler
         }
         public List<Grupprum> sparaGrupprum = new List<Grupprum>();
         public List<Sal> sparaSalar = new List<Sal>();
-        public void UniqueCheck(string input)
-        {
-            foreach (Sal sal in sparaSalar)
-            {
-                if (input == Namn)
-                {
-                    Console.WriteLine("Fel, en lokal måste ha ett unikt namn.");
-                    Console.ReadLine();
-                    break;
-                }
-            }
-            foreach(Grupprum grupprum in sparaGrupprum)
-            {
-                if(input == Namn)
-                {
-                    Console.WriteLine("Fel, en lokal måste ha ett unikt namn.");
-                    Console.ReadLine();
-                    break;                    
-                }
-            }
-        }
     }
-}
+}         
+    
+
+

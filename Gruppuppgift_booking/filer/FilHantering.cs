@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Gruppuppgift_booking.filer
@@ -59,5 +60,36 @@ namespace Gruppuppgift_booking.filer
 
 			File.WriteAllLines(pathTillFil, data);
 		}
-	}
+
+
+        private readonly static JsonSerializerOptions JSON_ReadSerialized = new()
+        {
+
+        };
+        public static bool ReadJson<T>(out T? outer, out Exception? exc, params string[] paths)
+        {
+            string path = Path.Combine(paths);
+            try
+            {
+                StreamReader read = new(path);
+                outer = JsonSerializer.Deserialize<T>(read.ReadToEnd(), JSON_ReadSerialized);
+                read.Close(); // Close read to open permissions to the file again.
+                exc = null;
+                return true;
+            }
+            catch (Exception e)
+            {
+                outer = default;
+                exc = e;
+                return false;
+            }
+        }
+        public static void WriteJson<T>(string path, T rec, JsonSerializerOptions options)
+        {
+            File.WriteAllText(path, JsonSerializer.Serialize(rec, options));
+        }
+
+
+
+    }
 }
