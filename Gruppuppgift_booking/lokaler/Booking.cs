@@ -27,5 +27,11 @@ namespace Gruppuppgift_booking.lokaler
         {
             return $"[{ID}]: \"{CustomerName}\" {StartTime} to {EndTime}";
         }
+
+        public Lokal MinLokal { get; private set; }
+        public void BokaLokal(Lokal lokal)
+        {
+            MinLokal = lokal;
+        }
     }
 }

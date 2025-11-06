@@ -10,11 +10,14 @@ namespace Gruppuppgift_booking.lokaler
     {
         public int GrupprumNummer;
         public bool Soffa;
-        public Grupprum(string namn, int platser, int grupprumNummer, bool soffa) : base(namn, platser)
+        public Grupprum(LokalData data) : base(data)
         {
-            GrupprumNummer = grupprumNummer;
-            Soffa = soffa;
+            GrupprumNummer = data.Nummer;
+            Soffa = data.HarSoffa;
+
+            lokaler.Add(this);
         }
+        /*
         public void GrupprumMaker()
         {
             Console.Clear();
@@ -49,5 +52,7 @@ namespace Gruppuppgift_booking.lokaler
             Grupprum GR = new Grupprum(namn, platser, grupprumNr, soffa);
             sparaGrupprum.Add(GR);
         }
+        */
     }
 }
+ 

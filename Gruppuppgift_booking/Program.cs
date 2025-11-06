@@ -1,4 +1,5 @@
 ﻿using Gruppuppgift_booking.filer;
+using Gruppuppgift_booking.lokaler;
 using Gruppuppgift_booking.Methods;
 
 namespace Gruppuppgift_booking
@@ -17,6 +18,19 @@ namespace Gruppuppgift_booking
         static void Main(string[] args)
         {
             FilHantering.Init();
+
+            if (FilHantering.ReadJson(out List<LokalData>? lokaler, out Exception? exc, "lokaler.json") && lokaler != null)
+            {
+                foreach(var lokData in lokaler)
+                {
+                    switch(lokData.Typ)
+                    {
+                        case LokalTyp.Lokal: new Lokal(lokData); break;
+                        case LokalTyp.Sal: new Sal(lokData); break;
+                        case LokalTyp.Grupprum: new Grupprum(lokData); break;
+                    }
+                }
+            }
 
             Start();
         }
@@ -53,8 +67,11 @@ namespace Gruppuppgift_booking
 
                 switch (MenyVal(5))
                 {
-                    case 1: ManageBookings(); break;
-                    case 2: HandleRooms(); break;
+                    case 1: Lokal.BokaLokal(); break;
+                    case 2: Lokal.VisaBokningar(); break;
+                    case 3: Lokal.VisaBokningar(); break;
+                    case 4: Lokal.AvbokaLokal(); break;
+                    case 5: Lokal.SorteraBokningar(); break;
                     case 0: Start(); Console.Clear(); break;
                 }
             }

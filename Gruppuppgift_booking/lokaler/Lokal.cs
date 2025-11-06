@@ -1,19 +1,76 @@
-﻿using System.Collections.Generic;
+﻿using Gruppuppgift_booking.Methods;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Gruppuppgift_booking.lokaler
 {
+    public record LokalData
+    (
+        LokalTyp Typ,
 
-    internal class Lokal
+        string Namn,
+        double Area,
+
+        int Nummer,
+        bool HarSoffa,
+        bool HarProjector
+    );
+
+    public class Lokal
     {
-        private static List<string> bokningar = new List<string>();
+        private static List<Booking> bokningar = [];
+        public static readonly List<Lokal> lokaler = [];
 
-        public static void BokaLokal(string lokalNamn)
+        public Lokal(LokalData data)
         {
-            bokningar.Add(lokalNamn);
-            Console.WriteLine($"Lokal bokad för: {lokalNamn}");
+            Namn = data.Namn;
+            Typ = data.Typ;
+        }
+
+        public string Namn;
+        public LokalTyp Typ;
+        public double Area;
+
+        public Booking? Bokning;
+
+
+        public static void BokaLokal()
+        {
+        Redo:
+            Console.Write("Ange kundens namn: ");
+            var customer = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(customer))
+                goto Redo;
+            
+            RedoStart:
+            Console.Write("Ange startdatum: ");
+            var datestart = Console.ReadLine();
+
+            if (DateTime.TryParse(datestart, out DateTime startdatum))
+                goto RedoStart;
+
+            RedoEnd:
+            Console.Write("Ange slutdatum: ");
+            var dateend = Console.ReadLine();
+
+            if (DateTime.TryParse(dateend, out DateTime slutdatum))
+                goto RedoEnd;
+
+
+
+
+            Lokal lok = lokaler[0];
+
+            Console.WriteLine($"Lokal bokad för: {lok.Namn}");
+
+            lok.Bokning = new Booking(customer, startdatum, slutdatum);
+            lok.Bokning.BokaLokal(lok);
+            bokningar.Add(lok.Bokning);
+
+
         }
 
         public static void VisaBokningar()
@@ -21,21 +78,42 @@ namespace Gruppuppgift_booking.lokaler
             Console.WriteLine("Bokade lokaler:");
             foreach (var bokning in bokningar)
             {
-                Console.WriteLine(bokning);
+                Console.WriteLine(bokning.GetBookingData());
             }
 
             // Else utifall lokal inte finns/bokad?
         }
 
-        public static void AvbokaLokal(string lokalNamn)   // För att kunna avboka lokal
+        public static void AvbokaLokal()   // För att kunna avboka lokal
         {
-            if (bokningar.Remove(lokalNamn))
+            if (bokningar.Count < 1)
+                return;
+
+            VisaBokningar();
+
+        Redo:
+            Console.Write("\nSkriv \"avbryt\" för att avbryta.\nAnge bokningens ID:");
+            var input = Console.ReadLine();
+            if (string.IsNullOrEmpty(input))
+                goto Redo;
+
+            if (input.ToLower() == "avbryt")
             {
-                Console.WriteLine($"Lokal avbokad för: {lokalNamn}");
+                return;
+            }
+
+            if (int.TryParse(input, out int id))
+                goto Redo;
+
+            if (bokningar.FirstOrDefault(x => x.ID == id) is Booking bok)
+            {
+                bok.MinLokal.Bokning = null;
+                bokningar.Remove(bok);
             }
             else
             {
-                Console.WriteLine($"Ingen bokning hittades för: {lokalNamn}");
+                MethodRepository.PrintColor($"Hittade inte en bokning med ID: {id}", ConsoleColor.Red);
+                goto Redo;
             }
         }
 
@@ -46,18 +124,11 @@ namespace Gruppuppgift_booking.lokaler
         }
     }
 
-
-    // Ska lägga in sökmetod senare också
-    class Program
+    public enum LokalTyp
     {
-        static void Main(string[] args)   //Testar metoderna
-        {
-            Lokal.BokaLokal("Rum A");
-            Lokal.BokaLokal("Rum B");
-            Lokal.BokaLokal("Rum c");
-            Lokal.BokaLokal("Rum D");
-            Lokal.VisaBokningar();
-        }
+        Lokal = 1,
+        Grupprum = 2,
+        Sal = 3,
     }
 }         
     

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gruppuppgift_booking.filer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,10 @@ namespace Gruppuppgift_booking.lokaler
     {
         public int SalNummer;
         public bool Projektor;
-        public Sal(string namn, int platser, int salNummer, bool projektor) : base(namn, platser)
+        public Sal(LokalData data) : base(data)
         {
-            SalNummer = salNummer;
-            Projektor = projektor;
+            SalNummer = data.Nummer;
+            Projektor = data.HarProjector;
         }
         public void SalMaker()
         {
@@ -46,8 +47,29 @@ namespace Gruppuppgift_booking.lokaler
                     break;
 
             }
-            Sal S = new Sal(namn, platser, salNr, projektor);
-            sparaSalar.Add(S);
+
+            List<LokalData> nyaLokaler = [];
+
+            foreach(var lokal in Lokal.lokaler)
+            {
+                var grupp = lokal as Grupprum;
+                var sal = lokal as Sal;
+
+                LokalData data = new LokalData
+                (
+                    lokal.Typ,
+                    lokal.Namn,
+                    lokal.Area,
+
+                    sal != null ? sal.SalNummer : grupp != null ? grupp.GrupprumNummer : 0,
+
+                    grupp != null && grupp.Soffa,
+                    sal != null && sal.Projektor
+                );
+                nyaLokaler.Add(data);
+            }
+
+            FilHantering.WriteJson("lokaler.json", nyaLokaler, new System.Text.Json.JsonSerializerOptions() { WriteIndented = true} );
         }
     }
 }
