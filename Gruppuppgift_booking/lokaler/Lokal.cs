@@ -122,6 +122,27 @@ namespace Gruppuppgift_booking.lokaler
             Bokningar = Bokningar.OrderBy(b => b).ToList();
             Console.WriteLine("Bokningar sorterade alfabetiskt.");   // Sorterar bokningar i bokstavsordning
         }
+        public void UniqueCheck(string input)
+        {
+            foreach (Sal sal in sparaSalar)
+            {
+                if (input == Namn)
+                {
+                    Console.WriteLine("Fel, en lokal måste ha ett unikt namn.");
+                    Console.ReadLine();
+                    break;
+                }
+            }
+            foreach (Grupprum grupprum in sparaGrupprum)
+            {
+                if (input == Namn)
+                {
+                    Console.WriteLine("Fel, en lokal måste ha ett unikt namn.");
+                    Console.ReadLine();
+                    break;
+                }
+            }
+        }
     }
 
     public enum LokalTyp
