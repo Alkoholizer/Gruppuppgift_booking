@@ -11,6 +11,8 @@ namespace Gruppuppgift_booking.lokaler
     {
         public int GrupprumNummer;
         public bool Soffa;
+        
+        // Denna metod ska EJ användas när nya lokaler skapas av användaren!
         public Grupprum(LokalData data) : base(data)
         {
             GrupprumNummer = data.Nummer;
@@ -18,6 +20,13 @@ namespace Gruppuppgift_booking.lokaler
 
             Lokaler.Add(this);
         }
+
+        public Grupprum(string namn, double area) : base(LokalTyp.Grupprum, namn, area)
+        {
+            
+            Lokaler.Add(this);
+        }
+
         public void GrupprumMaker()
         {
             Console.Clear();

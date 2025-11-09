@@ -32,6 +32,8 @@ namespace Gruppuppgift_booking.lokaler
     {
         private static int IncrementalID;
 
+        public const string FILENAME = "bokningar.json";
+
         public Booking(string _customerName, DateTime start, DateTime end)
         {
             ID = IncrementalID++;
@@ -74,7 +76,7 @@ namespace Gruppuppgift_booking.lokaler
         
 
 
-        private static List<Booking> Bokningar = [];
+        public static List<Booking> Bokningar { get; private set; } = [];
 
 		public static void NewBooking()
 		{
@@ -205,7 +207,7 @@ namespace Gruppuppgift_booking.lokaler
 
             FilHantering.WriteJson
             (
-                "bokningar.json", 
+                FILENAME, 
                 bookDatas, 
                 new System.Text.Json.JsonSerializerOptions()
                 {

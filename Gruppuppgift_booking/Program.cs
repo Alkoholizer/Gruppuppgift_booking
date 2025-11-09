@@ -11,7 +11,7 @@ namespace Gruppuppgift_booking
         {
             FilHantering.Init();
 
-            if (FilHantering.ReadJson(out List<LokalData>? lokaler, out Exception? exc, "lokaler.json") && lokaler != null)
+            if (FilHantering.ReadJson(out List<LokalData>? lokaler, out Exception? exc, Lokal.FILENAME) && lokaler != null)
             {
                 foreach(var lokData in lokaler)
                 {
@@ -21,6 +21,21 @@ namespace Gruppuppgift_booking
                         case LokalTyp.Sal: new Sal(lokData); break;
                         case LokalTyp.Grupprum: new Grupprum(lokData); break;
                     }
+                }
+            }
+
+            if (FilHantering.ReadJson(out List<BookingData>? bokningar, out exc, Booking.FILENAME) && lokaler != null)
+            {
+                foreach(var d in bokningar)
+                {
+                    var book = new Booking(d.CustomerName, d.StartTime, d.EndTime);
+                    if (d.LokalID > 0)
+                    {
+                        var lokal = Lokal.Lokaler.FirstOrDefault(x => x.ID == d.LokalID);
+                        if (lokal != null)
+                            book.BokaLokal(lokal);
+                    }
+                    Booking.Bokningar.Add(book);
                 }
             }
 

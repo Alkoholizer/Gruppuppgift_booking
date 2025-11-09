@@ -1,5 +1,4 @@
-﻿using Gruppuppgift_booking.filer;
-using Gruppuppgift_booking.Methods;
+﻿using Gruppuppgift_booking.Methods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +11,22 @@ namespace Gruppuppgift_booking.lokaler
     {
         public int SalNummer;
         public bool HarProjektor;
+
+        // Denna metod ska EJ användas när nya lokaler skapas av användaren!
         public Sal(LokalData data) : base(data)
         {
             SalNummer = data.Nummer;
             HarProjektor = data.HarProjector;
 
-            Lokal.Lokaler.Add(this);
+            Lokaler.Add(this);
         }
+
+        public Sal(string namn, double area) : base(LokalTyp.Sal, namn, area)
+        {
+
+            Lokaler.Add(this);
+        }
+
         public void SalMaker()
         {
             Console.Clear();

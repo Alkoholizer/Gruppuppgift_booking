@@ -9,6 +9,8 @@ namespace Gruppuppgift_booking.lokaler
 {
     public record LokalData
     (
+        int ID,
+
         LokalTyp Typ,
 
         string Namn,
@@ -21,17 +23,36 @@ namespace Gruppuppgift_booking.lokaler
 
     public class Lokal
     {
+        public const string FILENAME = "lokaler.json";
+
+        /// <summary>
+        /// Den här körs bara när programmet startar. (Vi läser in lokal filer)
+        /// </summary>
         public Lokal(LokalData data)
         {
-            IncrementID++;
-            ID = IncrementID;
+            ID = data.ID;
+            if (ID > IncrementID)
+                IncrementID = ID;
 
             Namn = data.Namn;
             Typ = data.Typ;
             Area = data.Area;
         }
 
+        /// <summary>
+        /// Använd denna för att skapa en ny lokal i programmet.
+        /// </summary>
+        public Lokal(LokalTyp typ, string namn, double area)
+        {
+            IncrementID++;
+            ID = IncrementID;
+
+            Namn = namn;
+            Typ = typ;
+            Area = area;
+        }
         private static int IncrementID;
+
         public readonly int ID;
 
         public string Namn { get; private set; }
@@ -61,6 +82,8 @@ namespace Gruppuppgift_booking.lokaler
 
             LokalData lok = new
             (
+                ID,
+
                 Typ,
                 Namn,
                 Area,
@@ -100,11 +123,23 @@ namespace Gruppuppgift_booking.lokaler
             /* TODO: Skapa en ny lokal och spara den i "Lokaler" listan i denna klassen.
                 Du måste också specificera om Lokalen är ett Grupprum eller en Sal!
 
+                Till Exempel:
+                    Välj lokalens namn här. Men om vi är ett grupprum, fråga användaren om lokalen har en soffa.
+                    För detta kan du använda dig av Grupprum klassen och köra en metod i denna metod.
+                    Ex: GrupprumMaker();
+            
+                Det behövs ej att ange lokalens lokaltyp, det körs automatiskt när lokalerna skapas.
+                    Du kan kolla Grupprum och Sal konstruktors och se hur de fungerar.
+
+                Grupprum och Sal har konstruktors som kan användas för att skapa dem.
+                Ex:
+                    Grupprum nyGrupp = new Grupprum(NAMN, AREA);
+                    Sal nySal = new Sal(NAMN, AREA);
+            
+
                 GÖR NULL CHECKAR OCH FEL KOLLAR!
 
-                Till Exempel:
-                    Välj lokalens namn här. Men om vi är ett grupprum, fråga användaren om lokalen har en soffa
-
+                Booking.cs klassen har exempel på hur du kan skriva koden här.
             */
 
 
@@ -115,9 +150,16 @@ namespace Gruppuppgift_booking.lokaler
         public static void TaBortLokal()
         {
             /* TODO: Välj en lokal att ta bort. Använd "Lokaler" listan i denna klassen.
+                Tips: Alla lokaler har ett unikt ID, använd den!
+                    I Booking klassen används en LINQ metod som heter "FirstOrDefault, kolla hur den används!
+
+                Extra: Om en Lokal har en bokning, måste du också ta bort den bokningen!
+                    När den bokningen är borttagen, kör Booking.SparaBokningar(); metoden.
+            
 
                 GÖR NULL CHECKAR OCH FEL KOLLAR!
 
+                Booking.cs klassen har exempel på hur du kan skriva koden här.
             */
             
 
@@ -135,7 +177,7 @@ namespace Gruppuppgift_booking.lokaler
 
             FilHantering.WriteJson
             (
-                "lokaler.json", 
+                FILENAME, 
                 lokDatas, 
                 new System.Text.Json.JsonSerializerOptions()
                 {
