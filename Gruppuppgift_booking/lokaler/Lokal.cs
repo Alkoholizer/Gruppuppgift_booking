@@ -124,16 +124,7 @@ namespace Gruppuppgift_booking.lokaler
         }
         public void UniqueCheck(string input)
         {
-            foreach (Sal sal in sparaSalar)
-            {
-                if (input == Namn)
-                {
-                    Console.WriteLine("Fel, en lokal måste ha ett unikt namn.");
-                    Console.ReadLine();
-                    break;
-                }
-            }
-            foreach (Grupprum grupprum in sparaGrupprum)
+            foreach (Lokal lok in Lokaler)
             {
                 if (input == Namn)
                 {
