@@ -4,14 +4,6 @@ using Gruppuppgift_booking.Methods;
 
 namespace Gruppuppgift_booking
 {
-    interface IBookable //Den abstrakta Bookable-klassen, som skall implementeras som returtyp vid bokning.
-    {
-        int? NewBooking(string costumerName, DateTime startTime, DateTime endTime);
-
-        bool CancelBooking(int bookingId);
-
-        bool CheckBookingStatus(int bookingId);
-    }
     internal class Program
     {
 
@@ -38,7 +30,7 @@ namespace Gruppuppgift_booking
         public static void Start(int menuIndex = -1)
         {
             int val = menuIndex;
-            if (val >= 0)
+            if (val < 0)
             {
                 Console.WriteLine
                 (
@@ -62,23 +54,33 @@ namespace Gruppuppgift_booking
                                 "\n2: Lista alla bokningar " +
                                 "\n3: Uppdatera bokning " +
                                 "\n4: Ta bort en bokning " +
-                                "\n5: Lista bokningar för år" +
-                                "\n0: Gå tillbaka");
+                                "\n0: Gå tillbaka"
+                                );
 
                 switch (MenyVal(5))
                 {
-                    case 1: Lokal.BokaLokal(); break;
-                    case 2: Lokal.VisaBokningar(); break;
-                    case 3: Lokal.VisaBokningar(); break;
-                    case 4: Lokal.AvbokaLokal(); break;
-                    case 5: Lokal.SorteraBokningar(); break;
-                    case 0: Start(); Console.Clear(); break;
+                    case 1: Booking.NewBooking(); break;
+                    case 2: Booking.VisaBokningar(); break;
+                    case 3: Booking.UpdateBooking(); break;
+                    case 4: Booking.CancelBooking(); break;
+                    case 0: Console.Clear(); Start(); break;
                 }
             }
             void HandleRooms()
             {
                 Console.WriteLine("1: Lista alla lokaler " +
-                                "\n2: Skapa ny lokal");
+                                "\n2: Skapa ny lokal" +
+                                "\n3: Ta bort en lokal" +
+                                "\n0: Gå tillbaka"
+                                );
+
+                switch (MenyVal(5))
+                {
+                    case 1: Lokal.VisaLokaler(true); break;
+                    case 2: Lokal.SkapaLokal(); break;
+                    case 3: Lokal.TaBortLokal(); break;
+                    case 0: Console.Clear(); Start(); break;
+                }
             }
 
             int MenyVal(int max, bool canExit = false)

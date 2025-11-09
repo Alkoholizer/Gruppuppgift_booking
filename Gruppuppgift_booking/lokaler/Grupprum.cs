@@ -18,14 +18,17 @@ namespace Gruppuppgift_booking.lokaler
 
             Lokaler.Add(this);
         }
+<<<<<<< Updated upstream
         
+=======
+>>>>>>> Stashed changes
         public void GrupprumMaker()
         {
             Console.Clear();
             Console.WriteLine("Ange ett namn på grupprummet.");
             string namn = Console.ReadLine();
             MethodRepository.NullCheck(namn);
-            UniqueCheck(namn);
+            //UniqueCheck(namn);
 
             Console.WriteLine("Ange antal sittplatser i grupprummet.");
             int.TryParse(Console.ReadLine(), out int platser);
@@ -53,6 +56,11 @@ namespace Gruppuppgift_booking.lokaler
                     break;
 
             }
+<<<<<<< Updated upstream
+=======
+            Grupprum GR = new Grupprum(namn, platser, grupprumNr, soffa);
+            Lokaler.Add(GR);
+>>>>>>> Stashed changes
         }
     }
 }

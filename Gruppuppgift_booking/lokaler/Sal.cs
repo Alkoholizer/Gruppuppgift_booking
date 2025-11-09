@@ -11,19 +11,26 @@ namespace Gruppuppgift_booking.lokaler
     public class Sal : Lokal
     {
         public int SalNummer;
-        public bool Projektor;
+        public bool HarProjektor;
         public Sal(LokalData data) : base(data)
         {
             SalNummer = data.Nummer;
-            Projektor = data.HarProjector;
+            HarProjektor = data.HarProjector;
+
+            Lokal.Lokaler.Add(this);
         }
         public void SalMaker()
         {
             Console.Clear();
             Console.WriteLine("Ange ett namn på salen.");
             string namn = Console.ReadLine();
+<<<<<<< Updated upstream
             MethodRepository.NullCheck(namn);
             UniqueCheck(namn);
+=======
+            
+			MethodRepository.NullCheck(namn);
+>>>>>>> Stashed changes
 
             Console.WriteLine("Ange antal sittplatser i salen.");
             int.TryParse(Console.ReadLine(), out int platser);
@@ -39,41 +46,21 @@ namespace Gruppuppgift_booking.lokaler
             switch (_pick)
             {
                 case "Y":
-                    projektor = true;
-                    break;
+                projektor = true;
+                break;
                 case "N":
-                    projektor = false;
-                    break;
+                projektor = false;
+                break;
                 default:
-                    Console.WriteLine("Ogiltig input, ingen projektor sparades.");
-                    Console.ReadLine();
-                    projektor = false;
-                    break;
-
+                Console.WriteLine("Ogiltig input, ingen projektor sparades.");
+                Console.ReadLine();
+                projektor = false;
+                break;
             }
 
-            List<LokalData> nyaLokaler = [];
 
-            foreach(var lokal in Lokal.Lokaler)
-            {
-                var grupp = lokal as Grupprum;
-                var sal = lokal as Sal;
-
-                LokalData data = new LokalData
-                (
-                    lokal.Typ,
-                    lokal.Namn,
-                    lokal.Area,
-
-                    sal != null ? sal.SalNummer : grupp != null ? grupp.GrupprumNummer : 0,
-
-                    grupp != null && grupp.Soffa,
-                    sal != null && sal.Projektor
-                );
-                nyaLokaler.Add(data);
-            }
-
-            FilHantering.WriteJson("lokaler.json", nyaLokaler, new System.Text.Json.JsonSerializerOptions() { WriteIndented = true} );
         }
+
+
     }
 }

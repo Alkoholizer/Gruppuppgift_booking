@@ -1,4 +1,5 @@
-﻿﻿using Gruppuppgift_booking.Methods;
+﻿using Gruppuppgift_booking.filer;
+using Gruppuppgift_booking.Methods;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,75 +21,131 @@ namespace Gruppuppgift_booking.lokaler
 
     public class Lokal
     {
-        private static List<Booking> Bokningar = [];
-        public static readonly List<Lokal> Lokaler = [];
-
         public Lokal(LokalData data)
         {
+            IncrementID++;
+            ID = IncrementID;
+
             Namn = data.Namn;
             Typ = data.Typ;
+            Area = data.Area;
         }
 
-        public string Namn;
-        public LokalTyp Typ;
-        public double Area;
+        private static int IncrementID;
+        public readonly int ID;
 
-        public Booking? Bokning;
+        public string Namn { get; private set; }
+        public LokalTyp Typ { get; private set; }
+        public double Area { get; private set; }
 
-
-        public static void BokaLokal()
+        public Booking? Bokning { get; private set; }
+        public void SetBokning(Booking? book)
         {
-        Redo:
-            Console.Write("Ange kundens namn: ");
-            var customer = Console.ReadLine();
-
-            if (string.IsNullOrEmpty(customer))
-                goto Redo;
-            
-            RedoStart:
-            Console.Write("Ange startdatum: ");
-            var datestart = Console.ReadLine();
-
-            if (DateTime.TryParse(datestart, out DateTime startdatum))
-                goto RedoStart;
-
-            RedoEnd:
-            Console.Write("Ange slutdatum: ");
-            var dateend = Console.ReadLine();
-
-            if (DateTime.TryParse(dateend, out DateTime slutdatum))
-                goto RedoEnd;
-
-
-
-
-            Lokal lok = Lokaler[0];
-
-            Console.WriteLine($"Lokal bokad för: {lok.Namn}");
-
-            lok.Bokning = new Booking(customer, startdatum, slutdatum);
-            lok.Bokning.BokaLokal(lok);
-            Bokningar.Add(lok.Bokning);
-
-
+            Bokning = book;
         }
 
-        public static void VisaBokningar()
+        
+        public static readonly List<Lokal> Lokaler = [];
+
+
+
+        public LokalData ToLokalData()
         {
-            Console.WriteLine("Bokade lokaler:");
-            foreach (var bokning in Bokningar)
+            var grupp = this as Grupprum;
+            var sal = this as Sal;
+
+            int number = 0;
+
+            if (sal != null) number = sal.SalNummer;
+            if (grupp != null) number = grupp.GrupprumNummer;
+
+            LokalData lok = new
+            (
+                Typ,
+                Namn,
+                Area,
+                number,
+
+				grupp != null && grupp.Soffa,
+
+				sal != null && sal.HarProjektor
+
+
+			);
+
+            return lok;
+        }
+
+        
+	
+        public static void VisaLokaler(bool visaBokade)
+        {
+            int id = 0;
+            foreach(var lok in Lokaler)
             {
-                Console.WriteLine(bokning.GetBookingData());
-            }
+                if (lok.Bokning != null && !visaBokade)
+                    continue;
 
-            // Else utifall lokal inte finns/bokad?
+                string txt = $"[{id}]: \"{lok.Namn}\"";
+                if (visaBokade)
+                    txt += " (Bokad!)";
+
+                Console.WriteLine(txt);
+                id++;
+            }
         }
 
-        public static void AvbokaLokal()   // För att kunna avboka lokal
+        public static void SkapaLokal()
         {
-            if (Bokningar.Count < 1)
-                return;
+            /* TODO: Skapa en ny lokal och spara den i "Lokaler" listan i denna klassen.
+                Du måste också specificera om Lokalen är ett Grupprum eller en Sal!
 
+                GÖR NULL CHECKAR OCH FEL KOLLAR!
+
+                Till Exempel:
+                    Välj lokalens namn här. Men om vi är ett grupprum, fråga användaren om lokalen har en soffa
+
+            */
+
+
+            // Den här ska vara kvar!
+            SparaLokaler();
+        }
+
+        public static void TaBortLokal()
+        {
+            /* TODO: Välj en lokal att ta bort. Använd "Lokaler" listan i denna klassen.
+
+                GÖR NULL CHECKAR OCH FEL KOLLAR!
+
+            */
+            
+
+            // Den här ska vara kvar!
+            SparaLokaler();
+        }
+
+        // Rör ej, den här är den enda funktionen som behövs för att spara lokaler!
+        private static void SparaLokaler()
+        {
+            List<LokalData> lokDatas = [];
+
+            foreach(var lok in Lokaler)
+                lokDatas.Add(lok.ToLokalData());
+
+            FilHantering.WriteJson
+            (
+                "lokaler.json", 
+                lokDatas, 
+                new System.Text.Json.JsonSerializerOptions()
+                {
+                    WriteIndented = true
+                }
+            );
+        }
+
+
+<<<<<<< Updated upstream
             VisaBokningar();
 
         Redo:
@@ -134,6 +191,8 @@ namespace Gruppuppgift_booking.lokaler
                 }
             }
         }
+=======
+>>>>>>> Stashed changes
     }
 
     public enum LokalTyp
