@@ -17,7 +17,10 @@ namespace Gruppuppgift_booking
                 {
                     switch(lokData.Typ)
                     {
-                        case LokalTyp.Lokal: new Lokal(lokData); break;
+                        case LokalTyp.Lokal:
+                            var lok = new Lokal(lokData);
+                            Lokal.Lokaler.Add(lok);
+                            break;
                         case LokalTyp.Sal: new Sal(lokData); break;
                         case LokalTyp.Grupprum: new Grupprum(lokData); break;
                     }
