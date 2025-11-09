@@ -144,55 +144,6 @@ namespace Gruppuppgift_booking.lokaler
             );
         }
 
-
-<<<<<<< Updated upstream
-            VisaBokningar();
-
-        Redo:
-            Console.Write("\nSkriv \"avbryt\" för att avbryta.\nAnge bokningens ID:");
-            var input = Console.ReadLine();
-            if (string.IsNullOrEmpty(input))
-                goto Redo;
-
-            if (input.ToLower() == "avbryt")
-            {
-                return;
-            }
-
-            if (int.TryParse(input, out int id))
-                goto Redo;
-
-            if (Bokningar.FirstOrDefault(x => x.ID == id) is Booking bok)
-            {
-                bok.MinLokal.Bokning = null;
-                Bokningar.Remove(bok);
-            }
-            else
-            {
-                MethodRepository.PrintColor($"Hittade inte en bokning med ID: {id}", ConsoleColor.Red);
-                goto Redo;
-            }
-        }
-
-        public static void SorteraBokningar()
-        {
-            Bokningar = Bokningar.OrderBy(b => b).ToList();
-            Console.WriteLine("Bokningar sorterade alfabetiskt.");   // Sorterar bokningar i bokstavsordning
-        }
-        public void UniqueCheck(string input)
-        {
-            foreach (Lokal lok in Lokaler)
-            {
-                if (input == Namn)
-                {
-                    Console.WriteLine("Fel, en lokal måste ha ett unikt namn.");
-                    Console.ReadLine();
-                    break;
-                }
-            }
-        }
-=======
->>>>>>> Stashed changes
     }
 
     public enum LokalTyp

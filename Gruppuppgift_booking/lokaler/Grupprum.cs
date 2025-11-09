@@ -18,10 +18,6 @@ namespace Gruppuppgift_booking.lokaler
 
             Lokaler.Add(this);
         }
-<<<<<<< Updated upstream
-        
-=======
->>>>>>> Stashed changes
         public void GrupprumMaker()
         {
             Console.Clear();
@@ -56,12 +52,8 @@ namespace Gruppuppgift_booking.lokaler
                     break;
 
             }
-<<<<<<< Updated upstream
-=======
-            Grupprum GR = new Grupprum(namn, platser, grupprumNr, soffa);
-            Lokaler.Add(GR);
->>>>>>> Stashed changes
         }
+
     }
 }
  

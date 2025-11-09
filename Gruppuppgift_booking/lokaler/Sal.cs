@@ -24,13 +24,8 @@ namespace Gruppuppgift_booking.lokaler
             Console.Clear();
             Console.WriteLine("Ange ett namn på salen.");
             string namn = Console.ReadLine();
-<<<<<<< Updated upstream
             MethodRepository.NullCheck(namn);
-            UniqueCheck(namn);
-=======
-            
-			MethodRepository.NullCheck(namn);
->>>>>>> Stashed changes
+            // UniqueCheck(namn);
 
             Console.WriteLine("Ange antal sittplatser i salen.");
             int.TryParse(Console.ReadLine(), out int platser);
