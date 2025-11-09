@@ -32,6 +32,7 @@ namespace Gruppuppgift_booking.Methods
             if (input == null)
             {
                 throw new ArgumentNullException(nameof(input));
+                Console.WriteLine("Fel, fältet kan inte vara tomt.");
             }
         }
     }
