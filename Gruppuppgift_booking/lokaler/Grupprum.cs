@@ -16,7 +16,7 @@ namespace Gruppuppgift_booking.lokaler
             GrupprumNummer = data.Nummer;
             Soffa = data.HarSoffa;
 
-            lokaler.Add(this);
+            Lokaler.Add(this);
         }
         /*
         public void GrupprumMaker()

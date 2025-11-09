@@ -1,4 +1,4 @@
-﻿using Gruppuppgift_booking.Methods;
+﻿﻿using Gruppuppgift_booking.Methods;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +20,8 @@ namespace Gruppuppgift_booking.lokaler
 
     public class Lokal
     {
-        private static List<Booking> bokningar = [];
-        public static readonly List<Lokal> lokaler = [];
+        private static List<Booking> Bokningar = [];
+        public static readonly List<Lokal> Lokaler = [];
 
         public Lokal(LokalData data)
         {
@@ -30,16 +30,104 @@ namespace Gruppuppgift_booking.lokaler
         }
 
         public string Namn;
-        public int Platser;
-        public Lokal(string namn, int platser)
+        public LokalTyp Typ;
+        public double Area;
+
+        public Booking? Bokning;
+
+
+        public static void BokaLokal()
         {
-            Namn = namn;
-            Platser = platser;
+        Redo:
+            Console.Write("Ange kundens namn: ");
+            var customer = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(customer))
+                goto Redo;
+            
+            RedoStart:
+            Console.Write("Ange startdatum: ");
+            var datestart = Console.ReadLine();
+
+            if (DateTime.TryParse(datestart, out DateTime startdatum))
+                goto RedoStart;
+
+            RedoEnd:
+            Console.Write("Ange slutdatum: ");
+            var dateend = Console.ReadLine();
+
+            if (DateTime.TryParse(dateend, out DateTime slutdatum))
+                goto RedoEnd;
+
+
+
+
+            Lokal lok = Lokaler[0];
+
+            Console.WriteLine($"Lokal bokad för: {lok.Namn}");
+
+            lok.Bokning = new Booking(customer, startdatum, slutdatum);
+            lok.Bokning.BokaLokal(lok);
+            Bokningar.Add(lok.Bokning);
+
+
         }
-        public List<Grupprum> sparaGrupprum = new List<Grupprum>();
-        public List<Sal> sparaSalar = new List<Sal>();
+
+        public static void VisaBokningar()
+        {
+            Console.WriteLine("Bokade lokaler:");
+            foreach (var bokning in Bokningar)
+            {
+                Console.WriteLine(bokning.GetBookingData());
+            }
+
+            // Else utifall lokal inte finns/bokad?
+        }
+
+        public static void AvbokaLokal()   // För att kunna avboka lokal
+        {
+            if (Bokningar.Count < 1)
+                return;
+
+            VisaBokningar();
+
+        Redo:
+            Console.Write("\nSkriv \"avbryt\" för att avbryta.\nAnge bokningens ID:");
+            var input = Console.ReadLine();
+            if (string.IsNullOrEmpty(input))
+                goto Redo;
+
+            if (input.ToLower() == "avbryt")
+            {
+                return;
+            }
+
+            if (int.TryParse(input, out int id))
+                goto Redo;
+
+            if (Bokningar.FirstOrDefault(x => x.ID == id) is Booking bok)
+            {
+                bok.MinLokal.Bokning = null;
+                Bokningar.Remove(bok);
+            }
+            else
+            {
+                MethodRepository.PrintColor($"Hittade inte en bokning med ID: {id}", ConsoleColor.Red);
+                goto Redo;
+            }
+        }
+
+        public static void SorteraBokningar()
+        {
+            Bokningar = Bokningar.OrderBy(b => b).ToList();
+            Console.WriteLine("Bokningar sorterade alfabetiskt.");   // Sorterar bokningar i bokstavsordning
+        }
     }
-}         
-    
 
-
+    public enum LokalTyp
+    {
+        Lokal = 1,
+        Grupprum = 2,
+        Sal = 3,
+    }
+}   
