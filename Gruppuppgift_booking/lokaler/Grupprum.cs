@@ -18,7 +18,7 @@ namespace Gruppuppgift_booking.lokaler
 
             Lokaler.Add(this);
         }
-        /*
+        
         public void GrupprumMaker()
         {
             Console.Clear();
@@ -53,10 +53,7 @@ namespace Gruppuppgift_booking.lokaler
                     break;
 
             }
-            Grupprum GR = new Grupprum(namn, platser, grupprumNr, soffa);
-            sparaGrupprum.Add(GR);
         }
-        */
     }
 }
  
