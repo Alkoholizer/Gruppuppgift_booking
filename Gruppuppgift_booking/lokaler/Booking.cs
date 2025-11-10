@@ -188,7 +188,31 @@ namespace Gruppuppgift_booking.lokaler
 
             // Bokning hittad, nu kan vi ändra den!
 
-            // TODO: Ändra bokningens data här!
+            /* TODO: Ändra bokningens data här!
+
+                Vi måste läsa användarens inmatning för att bestämma vad som ska ändras.
+                Möjliga exempel:
+                    a: Om användaren skriver "1", så vill användaren ändra namnet, sen frågar vi användaren efter ett nytt namn.
+                    b: Om användaren skriver "namn NYTTNAMN" så ändras namnet till NYTTNAMN
+
+                Tips: Om du använder exempel A, använd gärna en enum som innehåller datatyperna.
+                    Exempel:
+                    public enum BookingDataType
+                    {
+                        Namn = 1,
+                        StartTid = 2,
+                        etc...
+                    }
+
+                Om lokalen på bokningen ska ändras kan du kopiera lite av vad NewBooking() metoden i denna klassen gör.
+                    Du måste säga att den nya Lokalen använder denna bokningen.
+                        newLokal.SetBooking(book);
+                        book.SetLokal(newLokal);
+                    Du måste också säga till den gamla Lokalen att ta bort denna bokningen.
+                        book.Lokal?.SetBooking(null);
+                
+
+            */
 
 
             // Rör ej!
