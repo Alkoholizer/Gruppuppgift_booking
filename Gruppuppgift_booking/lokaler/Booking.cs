@@ -211,6 +211,7 @@ namespace Gruppuppgift_booking.lokaler
                     Du måste också säga till den gamla Lokalen att ta bort denna bokningen.
                         book.Lokal?.SetBooking(null);
                 
+                GÖR NULL CHECKAR OCH FEL KOLLAR!
 
             */
 
