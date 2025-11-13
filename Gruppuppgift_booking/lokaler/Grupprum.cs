@@ -27,17 +27,8 @@ namespace Gruppuppgift_booking.lokaler
             Lokaler.Add(this);
         }
 
-        public void GrupprumMaker()
+        public static void GrupprumMaker()
         {
-            Console.Clear();
-            Console.WriteLine("Ange ett namn på grupprummet.");
-            string namn = Console.ReadLine();
-            MethodRepository.NullCheck(namn);
-            //UniqueCheck(namn);
-
-            Console.WriteLine("Ange antal sittplatser i grupprummet.");
-            int.TryParse(Console.ReadLine(), out int platser);
-
             Console.WriteLine("Ange ett indexeringsnummer för grupprummet.");
             int.TryParse(Console.ReadLine(), out int grupprumNr);
 

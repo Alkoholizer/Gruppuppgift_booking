@@ -120,6 +120,30 @@ namespace Gruppuppgift_booking.lokaler
 
         public static void SkapaLokal()
         {
+            Console.Clear();
+            Console.WriteLine("Ange ett namn på lokalen.");
+            string namn = Console.ReadLine();
+            MethodRepository.NullCheck(namn);
+
+            Console.WriteLine("Ange antal sittplatser i lokalen.");
+            int.TryParse(Console.ReadLine(), out int platser);
+
+            Console.WriteLine("Vilken typ av lokal är det?");
+            Console.WriteLine("1. Sal");
+            Console.WriteLine("2. Grupprum");
+            int.TryParse(Console.ReadLine(), out int choice);
+            switch(choice)
+            {
+                case 1:
+                    Sal.SalMaker();
+                    break;
+                case 2:
+                    Grupprum.GrupprumMaker();
+                    break;
+                default:
+                    Console.WriteLine("Error: Ogiltigt val.");
+                    break;
+            }
             /* TODO: Skapa en ny lokal och spara den i "Lokaler" listan i denna klassen.
                 Du måste också specificera om Lokalen är ett Grupprum eller en Sal!
 
@@ -185,6 +209,20 @@ namespace Gruppuppgift_booking.lokaler
                 }
             );
         }
+/*        private static bool UniqueCheck(string namn)
+        {
+            bool isUnique = true;
+            foreach (var lok in Lokaler)
+            {
+                if(namn == Namn)
+                {
+                    isUnique = false;
+                    break;
+                }
+            }
+            return isUnique;
+        }
+*/
 
     }
 

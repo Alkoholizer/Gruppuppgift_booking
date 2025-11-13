@@ -27,17 +27,8 @@ namespace Gruppuppgift_booking.lokaler
             Lokaler.Add(this);
         }
 
-        public void SalMaker()
+        public static void SalMaker()
         {
-            Console.Clear();
-            Console.WriteLine("Ange ett namn på salen.");
-            string namn = Console.ReadLine();
-            MethodRepository.NullCheck(namn);
-            // UniqueCheck(namn);
-
-            Console.WriteLine("Ange antal sittplatser i salen.");
-            int.TryParse(Console.ReadLine(), out int platser);
-
             Console.WriteLine("Ange ett indexeringsnummer för salen.");
             int.TryParse(Console.ReadLine(), out int salNr);
 
