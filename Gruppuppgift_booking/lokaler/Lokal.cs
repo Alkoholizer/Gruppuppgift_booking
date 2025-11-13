@@ -16,7 +16,6 @@ namespace Gruppuppgift_booking.lokaler
         string Namn,
         double Area,
 
-
         bool HarSoffa,
         bool HarProjector
     );
@@ -102,19 +101,21 @@ namespace Gruppuppgift_booking.lokaler
                 Console.Clear();
                 MethodRepository.PrintColor("===RUMSFÖRTECKNING===", ConsoleColor.Cyan);
             }
+            else
+            {
+                MethodRepository.PrintColor("Lokaler", ConsoleColor.Cyan);
+            }
 
-            int id = 0;
             foreach(var lok in Lokaler)
             {
                 if (lok.Bokning != null && !visaBokade)
                     continue;
 
-                string txt = $"[{id}]: \"{lok.Namn}\"";
+                string txt = $"[{lok.ID}]: \"{lok.Namn}\"";
                 if (lok.Bokning != null && visaBokade)
-                    txt += " (Bokad!)";
+                    txt += $" (Bokad av: {lok.Bokning.CustomerName})";
 
                 Console.WriteLine(txt);
-                id++;
             }
 
             if (!frånBooking)
@@ -126,19 +127,25 @@ namespace Gruppuppgift_booking.lokaler
             Console.Clear();
             MethodRepository.PrintColor("===SKAPANDE AV LOKALER===", ConsoleColor.Cyan);
 
-            Console.WriteLine("Ange ett namn på lokalen.");
-            string namn = Console.ReadLine();
-            MethodRepository.NullCheck(namn);
+        NoName:
+            Console.Write("Ange ett namn på lokalen: ");
+            string? namn = Console.ReadLine();
+            if (string.IsNullOrEmpty(namn))
+            {
+                MethodRepository.PrintColor("Ogiltigt namn!", ConsoleColor.Red);
+                goto NoName;
+            }
 
-            Console.WriteLine("Hur stor är lokalen?");
-            double.TryParse(Console.ReadLine(), out double area);
+            Console.WriteLine("Ange antal sittplatser i lokalen.");
+            int.TryParse(Console.ReadLine(), out int platser);
 
             Console.WriteLine("Vilken typ av lokal är det?");
             Console.WriteLine("1. Sal");
             Console.WriteLine("2. Grupprum");
             if (!int.TryParse(Console.ReadLine(), out int choice))
             {
-                return;
+                MethodRepository.PrintColor("Ogiltig lokal typ!", ConsoleColor.Red);
+                goto NoTyp;
             }
 
             Lokal? lokalObj = null;

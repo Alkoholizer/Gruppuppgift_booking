@@ -27,25 +27,23 @@ namespace Gruppuppgift_booking.lokaler
 
         public void GrupprumMaker()
         {
+        Redo:
             Console.WriteLine("Har grupprummet en soffa? Y/N?");
-            string pick = Console.ReadLine();
-            MethodRepository.NullCheck(pick);
-            string _pick = pick.ToUpper();
-            bool soffa;
-            switch (_pick)
+            string? pick = Console.ReadLine();
+            
+            if (string.IsNullOrEmpty(pick))
+                goto Redo;
+
+            switch (pick.ToUpper())
             {
                 case "Y":
-                    soffa = true;
+                    Soffa = true;
                     break;
                 case "N":
-                    soffa = false;
+                    Soffa = false;
                     break;
                 default:
-                    Console.WriteLine("Ogiltig input, ingen soffa sparades.");
-                    Console.ReadLine();
-                    soffa = false;
-                    break;
-
+                    goto Redo;
             }
             Soffa = soffa;
         }

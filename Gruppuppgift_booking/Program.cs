@@ -36,7 +36,10 @@ namespace Gruppuppgift_booking
                     {
                         var lokal = Lokal.Lokaler.FirstOrDefault(x => x.ID == d.LokalID);
                         if (lokal != null)
+                        {
                             book.BokaLokal(lokal);
+                            lokal.SetBokning(book);
+                        }
                     }
                     Booking.Bokningar.Add(book);
                 }

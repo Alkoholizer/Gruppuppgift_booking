@@ -27,26 +27,25 @@ namespace Gruppuppgift_booking.lokaler
 
         public void SalMaker()
         {
+        Redo:
             Console.WriteLine("Har salen en projektor? Y/N?");
-            string pick = Console.ReadLine();
-            MethodRepository.NullCheck(pick);
-            string _pick = pick.ToUpper();
-            bool projektor;
-            switch (_pick)
+            string? pick = Console.ReadLine();
+            
+            if (string.IsNullOrEmpty(pick))
+                goto Redo;
+
+            switch (pick.ToUpper())
             {
                 case "Y":
-                projektor = true;
-                break;
+                    HarProjektor = true;
+                    break;
                 case "N":
-                projektor = false;
-                break;
+                    HarProjektor = false;
+                    break;
                 default:
-                Console.WriteLine("Ogiltig input, ingen projektor sparades.");
-                Console.ReadLine();
-                projektor = false;
-                break;
+                    goto Redo;
             }
-            HarProjektor = projektor;
+
 
         }
 
