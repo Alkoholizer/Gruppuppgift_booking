@@ -84,8 +84,15 @@ namespace Gruppuppgift_booking.lokaler
 
 		public static void NewBooking()
         {
+            Console.Clear();
             MethodRepository.PrintColor("===NY BOKNING===", ConsoleColor.Cyan);
-            Lokal.VisaLokaler(true, true);
+            
+            if (Lokal.Lokaler.Count < 1)
+            {
+                MethodRepository.PrintColor("Det finns inga lokaler att boka!", ConsoleColor.Red);
+                Program.ReturnFromMenu(MenyTyp.Bokningar);
+                return;
+            }
 
             Console.WriteLine();
 
@@ -114,16 +121,26 @@ namespace Gruppuppgift_booking.lokaler
                        DateTimeStyles.None,
                        out DateTime slutdatum))
                 goto RedoEnd;
+            
+            Console.WriteLine();
+            Lokal.VisaLokaler(false, true);
+            Console.WriteLine();
 
 		RedoLokal:
-            MethodRepository.PrintColor($"Ange en lokal att boka (0-{Lokal.Lokaler.Count - 1}): ", ConsoleColor.Cyan);
-            if (!int.TryParse(Console.ReadLine(), out int lokalID) && lokalID < 0 || lokalID >= Lokal.Lokaler.Count)
+            Console.Write($"Ange en lokal att boka: ");
+            if (!int.TryParse(Console.ReadLine(), out int lokalID))
             {
-                MethodRepository.PrintColor("Ange ett giltigt lokals ID!", ConsoleColor.Red);
+                MethodRepository.PrintColor("\nAnge ett giltigt lokals ID!", ConsoleColor.Red);
                 goto RedoLokal;
             }
 
-            Lokal lok = Lokal.Lokaler[lokalID];
+            Lokal? lok = Lokal.Lokaler.FirstOrDefault(x => x.ID == lokalID);
+
+            if (lok == null)
+            {
+                MethodRepository.PrintColor("\nAnge ett giltigt lokals ID!", ConsoleColor.Red);
+                goto RedoLokal;
+            }
 
             var book = new Booking(customer, startdatum, slutdatum);
 
@@ -202,42 +219,110 @@ namespace Gruppuppgift_booking.lokaler
                 goto Redo;
             }
 
-            // Bokning hittad, nu kan vi ändra den!
+            Console.WriteLine($"Nu ändrar vi bokning nr {book.ID} som ägs av {book.CustomerName}.\n");
 
-            /* TODO: Ändra bokningens data här!
+            //Ny kod av John. För att uppdatera bokningen.
+            MethodRepository.PrintColor("Vad vill du ändra?", ConsoleColor.Cyan);
+	        Console.WriteLine("1: Namn");
+	        Console.WriteLine("2: Start Tid");
+	        Console.WriteLine("3: Sluttid");
+	        Console.WriteLine("4: Lokal");
 
-                Vi måste läsa användarens inmatning för att bestämma vad som ska ändras.
-                Möjliga exempel:
-                    a: Om användaren skriver "1", så vill användaren ändra namnet, sen frågar vi användaren efter ett nytt namn.
-                    b: Om användaren skriver "namn NYTTNAMN" så ändras namnet till NYTTNAMN
+	        if (!int.TryParse(Console.ReadLine(), out int choice))
+	        {
+		        MethodRepository.PrintColor("Du måste ange ett giltigt nummer!", ConsoleColor.Red);
+	        }
 
-                Tips: Om du använder exempel A, använd gärna en enum som innehåller datatyperna.
-                    Exempel:
-                    public enum BookingDataType
-                    {
-                        Namn = 1,
-                        StartTid = 2,
-                        etc...
-                    }
+            switch ((BookingDataType)choice)
+		    {
+			    case BookingDataType.Namn:
+				    Console.Write("Ange nytt namn: ");
+				    string? newName = Console.ReadLine();
+				    if (!string.IsNullOrWhiteSpace(newName))
+				    {
+					    book.CustomerName = newName;
+					    Console.WriteLine("Namn uppdaterat!");
+				    }
+				    else
+				    {
+					    MethodRepository.PrintColor("Ogiltigt namn!", ConsoleColor.Red);
+                        return;
+				    }
+				    break;
 
-                Om lokalen på bokningen ska ändras kan du kopiera lite av vad NewBooking() metoden i denna klassen gör.
-                    Du måste säga att den nya Lokalen använder denna bokningen.
-                        newLokal.SetBooking(book);
-                        book.SetLokal(newLokal);
-                    Du måste också säga till den gamla Lokalen att ta bort denna bokningen.
-                        book.Lokal?.SetBooking(null);
-                
-                GÖR NULL CHECKAR OCH FEL KOLLAR!
+			    case BookingDataType.StartTid:
+				    Console.Write("Ange ny starttid (YYYY-MM-DD HH:MM): ");
+				    string? newStart = Console.ReadLine();
+				    if (DateTime.TryParse(newStart, out DateTime newStartTime))
+				    {
+					    book.StartTime = newStartTime;
+					    Console.WriteLine("Starttid uppdaterad!");
+				    }
+				    else
+				    {
+					    MethodRepository.PrintColor("Ogiltig starttid!", ConsoleColor.Red);
+                        return;
+				    }
+				    break;
 
-            */
+			    case BookingDataType.SlutTid:
+				    Console.Write("Ange ny sluttid (YYYY-MM-DD HH:MM): ");
+				    string? newEnd = Console.ReadLine();
+				    if (DateTime.TryParse(newEnd, out DateTime newEndTime))
+				    {
+					    book.EndTime = newEndTime;
+					    Console.WriteLine("Sluttid uppdaterad!");
+				    }
+				    else
+				    {
+					    MethodRepository.PrintColor("Ogiltig sluttid!", ConsoleColor.Red);
+                        return;
+				    }
+				    break;
+
+			    case BookingDataType.Lokal:
+				    Console.Write("Ange ID för ny lokal: ");
+				    if (int.TryParse(Console.ReadLine(), out int lokalId))
+				    {
+					    var newLokal = Lokal.Lokaler.FirstOrDefault(l => l.ID == lokalId);
+					    if (newLokal != null)
+					    {
+						    book.MinLokal?.SetBokning(null);// Koppla bort från gammal lokal
+						    newLokal.SetBokning(book);      // Koppla till ny lokal
+						    book.BokaLokal(newLokal);
+						    Console.WriteLine("Lokal uppdaterad!");
+					    }
+					    else
+					    {
+						    MethodRepository.PrintColor("Lokal hittades inte!", ConsoleColor.Red);
+                            return;
+					    }
+				    }
+				    else
+				    {
+					    MethodRepository.PrintColor("Ogiltigt ID!", ConsoleColor.Red);
+                        return;
+				    }
+				    break;
+
+			    default:
+				    MethodRepository.PrintColor("Ogiltigt val!", ConsoleColor.Red);
+                    return;
+		    }
 
 
             // Rör ej!
-            MethodRepository.PrintColor("Ny lokal bokad!", ConsoleColor.Green);
             Console.WriteLine(book.GetBookingData());
             SparaBokningar();
-            Program.ReturnFromMenu(MenyTyp.Bokningar);
-        }
+		}
+        
+        public enum BookingDataType
+	    {
+		    Namn = 1,
+		    StartTid = 2,
+		    SlutTid = 3,
+		    Lokal = 4
+	    }
 
         
         // Rör ej, den här är den enda funktionen som behövs för att spara bokningar!

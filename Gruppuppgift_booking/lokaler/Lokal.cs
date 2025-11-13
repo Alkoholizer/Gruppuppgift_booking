@@ -16,7 +16,6 @@ namespace Gruppuppgift_booking.lokaler
         string Namn,
         double Area,
 
-        int Nummer,
         bool HarSoffa,
         bool HarProjector
     );
@@ -75,11 +74,6 @@ namespace Gruppuppgift_booking.lokaler
             var grupp = this as Grupprum;
             var sal = this as Sal;
 
-            int number = 0;
-
-            if (sal != null) number = sal.SalNummer;
-            if (grupp != null) number = grupp.GrupprumNummer;
-
             LokalData lok = new
             (
                 ID,
@@ -87,7 +81,6 @@ namespace Gruppuppgift_booking.lokaler
                 Typ,
                 Namn,
                 Area,
-                number,
 
 				grupp != null && grupp.Soffa,
 
@@ -108,19 +101,21 @@ namespace Gruppuppgift_booking.lokaler
                 Console.Clear();
                 MethodRepository.PrintColor("===RUMSFÖRTECKNING===", ConsoleColor.Cyan);
             }
+            else
+            {
+                MethodRepository.PrintColor("Lokaler", ConsoleColor.Cyan);
+            }
 
-            int id = 0;
             foreach(var lok in Lokaler)
             {
                 if (lok.Bokning != null && !visaBokade)
                     continue;
 
-                string txt = $"[{id}]: \"{lok.Namn}\"";
+                string txt = $"[{lok.ID}]: \"{lok.Namn}\"";
                 if (lok.Bokning != null && visaBokade)
-                    txt += " (Bokad!)";
+                    txt += $" (Bokad av: {lok.Bokning.CustomerName})";
 
                 Console.WriteLine(txt);
-                id++;
             }
 
             if (!frånBooking)
@@ -132,19 +127,31 @@ namespace Gruppuppgift_booking.lokaler
             Console.Clear();
             MethodRepository.PrintColor("===SKAPANDE AV LOKALER===", ConsoleColor.Cyan);
 
-            Console.WriteLine("Ange ett namn på lokalen.");
-            string namn = Console.ReadLine();
-            MethodRepository.NullCheck(namn);
+        NoName:
+            Console.Write("Ange ett namn på lokalen: ");
+            string? namn = Console.ReadLine();
+            if (string.IsNullOrEmpty(namn))
+            {
+                MethodRepository.PrintColor("Ogiltigt namn!", ConsoleColor.Red);
+                goto NoName;
+            }
 
-            Console.WriteLine("Ange antal sittplatser i lokalen.");
-            int.TryParse(Console.ReadLine(), out int platser);
-
+        NoArea:
+            Console.Write("Ange lokalens area: ");
+            if (!double.TryParse(Console.ReadLine(), out double area) || area <= 0)
+            {
+                MethodRepository.PrintColor("Ogiltig area!", ConsoleColor.Red);
+                goto NoArea;
+            }
+            
+        NoTyp:
             Console.WriteLine("Vilken typ av lokal är det?");
             Console.WriteLine("1. Sal");
             Console.WriteLine("2. Grupprum");
             if (!int.TryParse(Console.ReadLine(), out int choice))
             {
-                return;
+                MethodRepository.PrintColor("Ogiltig lokal typ!", ConsoleColor.Red);
+                goto NoTyp;
             }
 
             Lokal? lokalObj = null;
@@ -152,12 +159,12 @@ namespace Gruppuppgift_booking.lokaler
             switch(choice)
             {
                 case 1:
-                    Sal sal = new Sal(namn, 0);
+                    Sal sal = new Sal(namn, area);
                     sal.SalMaker();
                     lokalObj = sal;
                     break;
                 case 2:
-                    Grupprum grup = new Grupprum(namn, 0);
+                    Grupprum grup = new Grupprum(namn, area);
                     grup.GrupprumMaker();
                     lokalObj = grup;
                     break;
