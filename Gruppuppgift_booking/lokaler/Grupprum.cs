@@ -9,13 +9,11 @@ namespace Gruppuppgift_booking.lokaler
 {
     public class Grupprum : Lokal
     {
-        public int GrupprumNummer;
         public bool Soffa;
         
         // Denna metod ska EJ användas när nya lokaler skapas av användaren!
         public Grupprum(LokalData data) : base(data)
         {
-            GrupprumNummer = data.Nummer;
             Soffa = data.HarSoffa;
 
             Lokaler.Add(this);
@@ -29,9 +27,6 @@ namespace Gruppuppgift_booking.lokaler
 
         public void GrupprumMaker()
         {
-            Console.WriteLine("Ange ett indexeringsnummer för grupprummet.");
-            int.TryParse(Console.ReadLine(), out int grupprumNr);
-
             Console.WriteLine("Har grupprummet en soffa? Y/N?");
             string pick = Console.ReadLine();
             MethodRepository.NullCheck(pick);
@@ -52,6 +47,7 @@ namespace Gruppuppgift_booking.lokaler
                     break;
 
             }
+            Soffa = soffa;
         }
 
     }

@@ -9,13 +9,11 @@ namespace Gruppuppgift_booking.lokaler
 {
     public class Sal : Lokal
     {
-        public int SalNummer;
         public bool HarProjektor;
 
         // Denna metod ska EJ användas när nya lokaler skapas av användaren!
         public Sal(LokalData data) : base(data)
         {
-            SalNummer = data.Nummer;
             HarProjektor = data.HarProjector;
 
             Lokaler.Add(this);
@@ -29,9 +27,6 @@ namespace Gruppuppgift_booking.lokaler
 
         public void SalMaker()
         {
-            Console.WriteLine("Ange ett indexeringsnummer för salen.");
-            int.TryParse(Console.ReadLine(), out int salNr);
-
             Console.WriteLine("Har salen en projektor? Y/N?");
             string pick = Console.ReadLine();
             MethodRepository.NullCheck(pick);
@@ -51,7 +46,7 @@ namespace Gruppuppgift_booking.lokaler
                 projektor = false;
                 break;
             }
-
+            HarProjektor = projektor;
 
         }
 

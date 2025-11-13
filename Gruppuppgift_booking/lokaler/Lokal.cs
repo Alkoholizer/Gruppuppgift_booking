@@ -16,7 +16,7 @@ namespace Gruppuppgift_booking.lokaler
         string Namn,
         double Area,
 
-        int Nummer,
+
         bool HarSoffa,
         bool HarProjector
     );
@@ -75,11 +75,6 @@ namespace Gruppuppgift_booking.lokaler
             var grupp = this as Grupprum;
             var sal = this as Sal;
 
-            int number = 0;
-
-            if (sal != null) number = sal.SalNummer;
-            if (grupp != null) number = grupp.GrupprumNummer;
-
             LokalData lok = new
             (
                 ID,
@@ -87,7 +82,6 @@ namespace Gruppuppgift_booking.lokaler
                 Typ,
                 Namn,
                 Area,
-                number,
 
 				grupp != null && grupp.Soffa,
 
@@ -136,8 +130,8 @@ namespace Gruppuppgift_booking.lokaler
             string namn = Console.ReadLine();
             MethodRepository.NullCheck(namn);
 
-            Console.WriteLine("Ange antal sittplatser i lokalen.");
-            int.TryParse(Console.ReadLine(), out int platser);
+            Console.WriteLine("Hur stor är lokalen?");
+            double.TryParse(Console.ReadLine(), out double area);
 
             Console.WriteLine("Vilken typ av lokal är det?");
             Console.WriteLine("1. Sal");
@@ -152,12 +146,12 @@ namespace Gruppuppgift_booking.lokaler
             switch(choice)
             {
                 case 1:
-                    Sal sal = new Sal(namn, 0);
+                    Sal sal = new Sal(namn, area);
                     sal.SalMaker();
                     lokalObj = sal;
                     break;
                 case 2:
-                    Grupprum grup = new Grupprum(namn, 0);
+                    Grupprum grup = new Grupprum(namn, area);
                     grup.GrupprumMaker();
                     lokalObj = grup;
                     break;
