@@ -27,7 +27,7 @@ namespace Gruppuppgift_booking.lokaler
             Lokaler.Add(this);
         }
 
-        public static void GrupprumMaker()
+        public void GrupprumMaker()
         {
             Console.WriteLine("Ange ett indexeringsnummer för grupprummet.");
             int.TryParse(Console.ReadLine(), out int grupprumNr);

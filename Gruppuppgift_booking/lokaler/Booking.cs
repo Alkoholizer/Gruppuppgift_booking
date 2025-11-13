@@ -1,7 +1,9 @@
 ﻿using Gruppuppgift_booking.filer;
 using Gruppuppgift_booking.Methods;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,7 +56,9 @@ namespace Gruppuppgift_booking.lokaler
 
         public string GetBookingData()
         {
-            return $"[{ID}]: \"{CustomerName}\" {StartTime} to {EndTime}";
+            return $"[{ID}]: \"{CustomerName}\", Datum: {
+                StartTime:MMMM dd, yyyy} till {
+                EndTime:MMMM dd, yyyy}";
         }
 
 
@@ -79,32 +83,40 @@ namespace Gruppuppgift_booking.lokaler
         public static List<Booking> Bokningar { get; private set; } = [];
 
 		public static void NewBooking()
-		{
-            Lokal.VisaLokaler(true);
+        {
+            MethodRepository.PrintColor("===NY BOKNING===", ConsoleColor.Cyan);
+            Lokal.VisaLokaler(true, true);
+
+            Console.WriteLine();
 
 		Redo:
             Console.Write("Ange kundens namn: ");
             var customer = Console.ReadLine();
-
             if (string.IsNullOrEmpty(customer))
                 goto Redo;
             
         RedoStart:
-            Console.Write("Ange startdatum: ");
+            Console.Write("Ange startdatum (yyyy-MM-dd): ");
             var datestart = Console.ReadLine();
-
-            if (DateTime.TryParse(datestart, out DateTime startdatum))
+            if (!DateTime.TryParseExact(datestart,
+                       ["yyyy-MM-dd"],
+                       new CultureInfo("en-SE"),
+                       DateTimeStyles.None,
+                       out DateTime startdatum))
                 goto RedoStart;
 
         RedoEnd:
-            Console.Write("Ange slutdatum: ");
-            var dateend = Console.ReadLine();
-
-            if (DateTime.TryParse(dateend, out DateTime slutdatum))
+            Console.Write("Ange slutdatum: (yyyy-MM-dd): ");
+            var dateEnd = Console.ReadLine();
+            if (!DateTime.TryParseExact(dateEnd,
+                       ["yyyy-MM-dd"],
+                       new CultureInfo("en-SE"),
+                       DateTimeStyles.None,
+                       out DateTime slutdatum))
                 goto RedoEnd;
 
 		RedoLokal:
-            MethodRepository.PrintColor($"Ange en lokal att boka (0-{Lokal.Lokaler.Count}): ", ConsoleColor.Cyan);
+            MethodRepository.PrintColor($"Ange en lokal att boka (0-{Lokal.Lokaler.Count - 1}): ", ConsoleColor.Cyan);
             if (!int.TryParse(Console.ReadLine(), out int lokalID) && lokalID < 0 || lokalID >= Lokal.Lokaler.Count)
             {
                 MethodRepository.PrintColor("Ange ett giltigt lokals ID!", ConsoleColor.Red);
@@ -122,6 +134,8 @@ namespace Gruppuppgift_booking.lokaler
             Console.WriteLine($"Lokalen \"{lok.Namn}\" bokad för: {customer}");
 
             SparaBokningar();
+
+            Program.ReturnFromMenu(MenyTyp.Bokningar);
 		}
 
 		public static void CancelBooking()
@@ -142,7 +156,7 @@ namespace Gruppuppgift_booking.lokaler
             if (input.ToLower() == "avbryt")
             {
                 Console.Clear();
-                Program.Start(1);
+                Program.Start(MenyTyp.Bokningar);
                 return;
             }
 
@@ -157,6 +171,8 @@ namespace Gruppuppgift_booking.lokaler
             book.MinLokal?.SetBokning(null);
             Bokningar.Remove(book);
             SparaBokningar();
+
+            Program.ReturnFromMenu(MenyTyp.Bokningar);
 		}
 
 		public static void UpdateBooking()
@@ -175,7 +191,7 @@ namespace Gruppuppgift_booking.lokaler
             if (input.ToLower() == "avbryt")
             {
                 Console.Clear();
-                Program.Start(1);
+                Program.Start(MenyTyp.Bokningar);
                 return;
             }
 
@@ -217,9 +233,11 @@ namespace Gruppuppgift_booking.lokaler
 
 
             // Rör ej!
+            MethodRepository.PrintColor("Ny lokal bokad!", ConsoleColor.Green);
             Console.WriteLine(book.GetBookingData());
             SparaBokningar();
-		}
+            Program.ReturnFromMenu(MenyTyp.Bokningar);
+        }
 
         
         // Rör ej, den här är den enda funktionen som behövs för att spara bokningar!
@@ -245,17 +263,21 @@ namespace Gruppuppgift_booking.lokaler
 
         public static void VisaBokningar()
         {
+            Console.Clear();
+            MethodRepository.PrintColor("===BOKADE LOKALER===", ConsoleColor.Cyan);
             if (Bokningar.Count < 1)
             {
                 MethodRepository.PrintColor("Inga bokningar sparade!", ConsoleColor.Red);
+                Program.ReturnFromMenu(MenyTyp.Bokningar);
                 return;
             }
 
-            Console.WriteLine("Bokade lokaler:");
             foreach (var bokning in Bokningar)
             {
                 Console.WriteLine(bokning.GetBookingData());
             }
+
+            Program.ReturnFromMenu(MenyTyp.Bokningar);
         }
 
         public static void SorteraBokningar()

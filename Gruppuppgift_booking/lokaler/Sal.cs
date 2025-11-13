@@ -27,7 +27,7 @@ namespace Gruppuppgift_booking.lokaler
             Lokaler.Add(this);
         }
 
-        public static void SalMaker()
+        public void SalMaker()
         {
             Console.WriteLine("Ange ett indexeringsnummer för salen.");
             int.TryParse(Console.ReadLine(), out int salNr);

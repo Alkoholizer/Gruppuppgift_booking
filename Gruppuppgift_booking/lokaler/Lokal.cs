@@ -101,8 +101,14 @@ namespace Gruppuppgift_booking.lokaler
 
         
 	
-        public static void VisaLokaler(bool visaBokade)
+        public static void VisaLokaler(bool visaBokade, bool frånBooking = false)
         {
+            if (!frånBooking)
+            {
+                Console.Clear();
+                MethodRepository.PrintColor("===RUMSFÖRTECKNING===", ConsoleColor.Cyan);
+            }
+
             int id = 0;
             foreach(var lok in Lokaler)
             {
@@ -110,17 +116,22 @@ namespace Gruppuppgift_booking.lokaler
                     continue;
 
                 string txt = $"[{id}]: \"{lok.Namn}\"";
-                if (visaBokade)
+                if (lok.Bokning != null && visaBokade)
                     txt += " (Bokad!)";
 
                 Console.WriteLine(txt);
                 id++;
             }
+
+            if (!frånBooking)
+                Program.ReturnFromMenu(MenyTyp.Lokaler);
         }
 
         public static void SkapaLokal()
         {
             Console.Clear();
+            MethodRepository.PrintColor("===SKAPANDE AV LOKALER===", ConsoleColor.Cyan);
+
             Console.WriteLine("Ange ett namn på lokalen.");
             string namn = Console.ReadLine();
             MethodRepository.NullCheck(namn);
@@ -131,14 +142,24 @@ namespace Gruppuppgift_booking.lokaler
             Console.WriteLine("Vilken typ av lokal är det?");
             Console.WriteLine("1. Sal");
             Console.WriteLine("2. Grupprum");
-            int.TryParse(Console.ReadLine(), out int choice);
+            if (!int.TryParse(Console.ReadLine(), out int choice))
+            {
+                return;
+            }
+
+            Lokal? lokalObj = null;
+
             switch(choice)
             {
                 case 1:
-                    Sal.SalMaker();
+                    Sal sal = new Sal(namn, 0);
+                    sal.SalMaker();
+                    lokalObj = sal;
                     break;
                 case 2:
-                    Grupprum.GrupprumMaker();
+                    Grupprum grup = new Grupprum(namn, 0);
+                    grup.GrupprumMaker();
+                    lokalObj = grup;
                     break;
                 default:
                     Console.WriteLine("Error: Ogiltigt val.");
@@ -169,10 +190,15 @@ namespace Gruppuppgift_booking.lokaler
 
             // Den här ska vara kvar!
             SparaLokaler();
+
+            Program.ReturnFromMenu(MenyTyp.Lokaler);
         }
 
         public static void TaBortLokal()
         {
+            Console.Clear();
+            MethodRepository.PrintColor("===RADERING AV LOKALER===", ConsoleColor.Cyan);
+
             /* TODO: Välj en lokal att ta bort. Använd "Lokaler" listan i denna klassen.
                 Tips: Alla lokaler har ett unikt ID, använd den!
                     I Booking klassen används en LINQ metod som heter "FirstOrDefault, kolla hur den används!
@@ -185,7 +211,7 @@ namespace Gruppuppgift_booking.lokaler
 
                 Booking.cs klassen har exempel på hur du kan skriva koden här.
             */
-            
+
 
             // Den här ska vara kvar!
             SparaLokaler();

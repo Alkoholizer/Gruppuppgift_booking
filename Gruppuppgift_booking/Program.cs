@@ -45,29 +45,32 @@ namespace Gruppuppgift_booking
             Start();
         }
 
-        public static void Start(int menuIndex = -1)
+        public static void Start(MenyTyp meny = MenyTyp.Inget)
         {
-            int val = menuIndex;
-            if (val < 0)
+            if (meny == MenyTyp.Inget)
             {
+                MethodRepository.PrintColor("Välkommen till bokningssystemet!", ConsoleColor.Cyan);
                 Console.WriteLine
                 (
-                    "Välkommen till bokningssystemet!\n" +
                     "Mata in en siffra för att välja." +
                     "\n1: Hantera bokningar " +
                     "\n2: Hantera lokaler"
                 );
-                val = MenyVal(2, true);
+                meny = (MenyTyp)MenyVal(2, true);
             }
 
-            switch(val)
+            switch(meny)
             {
-                case 1: ManageBookings(); break;
-                case 2: HandleRooms(); break;
+                case MenyTyp.Inget: Console.Clear(); Start(meny); break;
+                case MenyTyp.Bokningar: ManageBookings(); break;
+                case MenyTyp.Lokaler: HandleRooms(); break;
             }
 
             void ManageBookings()
             {
+                Console.Clear();
+                MethodRepository.PrintColor("===BOKNINGAR===", ConsoleColor.Cyan);
+
                 Console.WriteLine("1: Skapa ny bokning " +
                                 "\n2: Lista alla bokningar " +
                                 "\n3: Uppdatera bokning " +
@@ -75,7 +78,7 @@ namespace Gruppuppgift_booking
                                 "\n0: Gå tillbaka"
                                 );
 
-                switch (MenyVal(5))
+                switch (MenyVal(4))
                 {
                     case 1: Booking.NewBooking(); break;
                     case 2: Booking.VisaBokningar(); break;
@@ -86,13 +89,16 @@ namespace Gruppuppgift_booking
             }
             void HandleRooms()
             {
+                Console.Clear();
+                MethodRepository.PrintColor("===LOKALER===", ConsoleColor.Cyan);
+
                 Console.WriteLine("1: Lista alla lokaler " +
                                 "\n2: Skapa ny lokal" +
                                 "\n3: Ta bort en lokal" +
                                 "\n0: Gå tillbaka"
                                 );
 
-                switch (MenyVal(5))
+                switch (MenyVal(3))
                 {
                     case 1: Lokal.VisaLokaler(true); break;
                     case 2: Lokal.SkapaLokal(); break;
@@ -143,10 +149,28 @@ namespace Gruppuppgift_booking
                     default: break;
                 }
 
+                Console.WriteLine();
+
                 return val;
 
             }
 
         }
+    
+        public static void ReturnFromMenu(MenyTyp typ)
+        {
+            MethodRepository.PrintColor("\nTryck på valfri tagent för att fortsätta...", ConsoleColor.Yellow);
+            Console.ReadKey(true);
+            Console.Clear();
+            Program.Start(typ);
+        }
+    
+    }
+
+    public enum MenyTyp
+    {
+        Inget = 0,
+        Bokningar = 1,
+        Lokaler = 2
     }
 }
