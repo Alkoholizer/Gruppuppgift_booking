@@ -192,7 +192,7 @@ namespace Gruppuppgift_booking.lokaler
             Console.Clear();
             MethodRepository.PrintColor("===RADERING AV LOKALER===", ConsoleColor.Cyan);
 
-            VisaLokaler(true, frånBooking: true);
+            VisaLokaler(true, true);
         noID:
             Console.Write("\n Ange ID på lokalen du vill ta bort (eller tryck ENTER för att avbryta");
             string? idInput = Console.ReadLine();
@@ -220,10 +220,13 @@ namespace Gruppuppgift_booking.lokaler
 
             if (lokalAttTaBort.Bokning != null)
             {
+                Booking.Bokningar.Remove(lokalAttTaBort.Bokning);
                 MethodRepository.PrintColor(
-                    $"Lokalen: {lokalAttTaBort.Namn} har en aktiv bokning. Du måste ta bort bokningen först", ConsoleColor.Yellow);
-                goto noID;
+                    $"Lokalen: {lokalAttTaBort.Namn} hade en aktiv bokning och har nu tagits bort. \n", ConsoleColor.Green);
+
+                Booking.SparaBokningar();
             }
+            
 
             Lokaler.Remove(lokalAttTaBort);
 
