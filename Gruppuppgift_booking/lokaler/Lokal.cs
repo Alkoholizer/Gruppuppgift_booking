@@ -66,6 +66,27 @@ namespace Gruppuppgift_booking.lokaler
         }
 
         
+        public string GetLokalData()
+        {
+            string txt = $"[{ID}] Namn: \"{Namn}\", Lokaltyp: {Typ}, Area: {Area:0.0#} ";
+
+            switch(Typ)
+            {
+                case LokalTyp.Grupprum:
+                    txt += (this as Grupprum).Soffa ? "Har soffa" : "";
+                    break;
+                case LokalTyp.Sal:
+                    txt += (this as Sal).HarProjektor ? "Har projektor" : "";
+                    break;
+            }
+
+            if (Bokning != null)
+                txt += $" (Bokad av: \"{Bokning.CustomerName}\")";
+
+            return txt;
+        }
+
+        
         public static readonly List<Lokal> Lokaler = [];
 
 
@@ -117,11 +138,7 @@ namespace Gruppuppgift_booking.lokaler
                 if (lok.Bokning != null && !visaBokade)
                     continue;
 
-                string txt = $"[{lok.ID}]: \"{lok.Namn}\"";
-                if (lok.Bokning != null && visaBokade)
-                    txt += $" (Bokad av: {lok.Bokning.CustomerName})";
-
-                Console.WriteLine(txt);
+                Console.WriteLine(lok.GetLokalData());
             }
 
             if (!frånBooking)

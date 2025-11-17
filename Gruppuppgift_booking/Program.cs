@@ -9,7 +9,16 @@ namespace Gruppuppgift_booking
 
         static void Main(string[] args)
         {
-            FilHantering.Init();
+            FilHantering.SparaFil
+            (
+                [
+                    "Gustav",
+                    "Simon",
+                    "Sarisa",
+                    "John"
+                ],
+                "Grupp 4 (Coola Kids).txt"
+            );
 
             if (FilHantering.ReadJson(out List<LokalData>? lokaler, out Exception? exc, Lokal.FILENAME) && lokaler != null)
             {
@@ -54,7 +63,7 @@ namespace Gruppuppgift_booking
 
                 Booking.SparaBokningar();
             }
-
+            
             Start();
         }
 
