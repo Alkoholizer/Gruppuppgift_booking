@@ -137,15 +137,6 @@ namespace Gruppuppgift_booking.lokaler
                 goto NoName;
             }
 
-        NoTyp:
-            Console.WriteLine("Vilken typ av lokal är det?");
-            Console.WriteLine("1. Sal");
-            Console.WriteLine("2. Grupprum");
-            if (!int.TryParse(Console.ReadLine(), out int choice))
-            {
-                MethodRepository.PrintColor("Ogiltig lokal typ!", ConsoleColor.Red);
-                goto NoTyp;
-            }
         noArea:
             Console.Write("\nAnge area i kvadratmeter: ");
             string? areaInput = Console.ReadLine();
@@ -154,6 +145,16 @@ namespace Gruppuppgift_booking.lokaler
             {
                 MethodRepository.PrintColor("Ogiltigt värde för area, ange ett positivt nummer!", ConsoleColor.Red);
                 goto noArea;
+            }
+
+        NoTyp:
+            Console.WriteLine("Vilken typ av lokal är det?");
+            Console.WriteLine("1. Sal");
+            Console.WriteLine("2. Grupprum");
+            if (!int.TryParse(Console.ReadLine(), out int choice))
+            {
+                MethodRepository.PrintColor("Ogiltig lokal typ!", ConsoleColor.Red);
+                goto NoTyp;
             }
 
 
@@ -172,23 +173,16 @@ namespace Gruppuppgift_booking.lokaler
                     lokalObj = grup;
                     break;
                 default:
-                    Console.WriteLine("Error: Ogiltigt val.");
-                    break;
-            }
-            
-            if (lokalObj != null)
-            {
-                Lokaler.Add(lokalObj);
-                MethodRepository.PrintColor(
-                    $"Lokal av typen: {lokalObj.Typ} med lokalnamn: {lokalObj.Namn} har nu skapats och sparats", ConsoleColor.Green);
-            }
-            else
-            {
-                //MethodRepository.PrintColor();
+                    MethodRepository.PrintColor("Ogiltig lokal typ!", ConsoleColor.Red);
+                    goto NoTyp;
             }
 
-                // Den här ska vara kvar!
-                SparaLokaler();
+            Lokaler.Add(lokalObj);
+            MethodRepository.PrintColor(
+                $"Lokal av typen: {lokalObj.Typ} med lokalnamn: {lokalObj.Namn} har nu skapats och sparats", ConsoleColor.Green);
+            
+            // Den här ska vara kvar!
+            SparaLokaler();
 
             Program.ReturnFromMenu(MenyTyp.Lokaler);
         }
