@@ -2,6 +2,7 @@
 using Gruppuppgift_booking.Methods;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -147,6 +148,18 @@ namespace Gruppuppgift_booking.lokaler
                 MethodRepository.PrintColor("Ogiltig lokal typ!", ConsoleColor.Red);
                 goto NoTyp;
             }
+        noArea:
+            Console.WriteLine("Ange are i kvadratmeter");
+            string? areaInput = Console.ReadLine();
+            double area;
+
+            if (!double.TryParse(areaInput, out area) || area <= 0)
+            {
+                MethodRepository.PrintColor("Ogiltigt värde för area, ange ett positivt nummer!", ConsoleColor.Red);
+                goto noArea;
+            }
+        NoTyp:
+
 
             Lokal? lokalObj = null;
 
@@ -187,10 +200,19 @@ namespace Gruppuppgift_booking.lokaler
 
                 Booking.cs klassen har exempel på hur du kan skriva koden här.
             */
+            if (lokalObj != null)
+            {
+                Lokaler.Add(lokalObj);
+                MethodRepository.PrintColor(
+                    $"Lokal av typen: {lokalObj.Typ} med lokalnamn: {lokalObj.Namn} har nu skapats och sparats", ConsoleColor.Green);
+            }
+            else
+            {
+                //MethodRepository.PrintColor();
+            }
 
-
-            // Den här ska vara kvar!
-            SparaLokaler();
+                // Den här ska vara kvar!
+                SparaLokaler();
 
             Program.ReturnFromMenu(MenyTyp.Lokaler);
         }
@@ -199,6 +221,43 @@ namespace Gruppuppgift_booking.lokaler
         {
             Console.Clear();
             MethodRepository.PrintColor("===RADERING AV LOKALER===", ConsoleColor.Cyan);
+
+            VisaLokaler(true, frånBooking: true);
+        noID:
+            Console.Write("\n Ange ID på lokalen du vill ta bort (eller tryck Enter för att avbryta");
+            string? idInput = Console.ReadLine();
+            
+            if (string.IsNullOrEmpty(idInput))
+            {
+                MethodRepository.PrintColor("Radering av lokal är AVBRUTEN", ConsoleColor.Yellow);
+                Program.ReturnFromMenu(MenyTyp.Lokaler);
+                return;
+            }
+
+            if (!int.TryParse(idInput, out int idToRemove))
+            {
+                MethodRepository.PrintColor("Ogiltig ID, Ange ett nummer.", ConsoleColor.Red);
+                goto noID;
+            }
+
+            Lokal? lokalAttTaBort = Lokaler.FirstOrDefault(l => l.ID == idToRemove);
+
+            if (lokalAttTaBort == null)
+            {
+                MethodRepository.PrintColor($"Lokal med ID: {idToRemove} hittades inte", ConsoleColor.Red);
+                goto noID;
+            }
+
+            if (lokalAttTaBort != null)
+            {
+                MethodRepository.PrintColor(
+                    $"Lokal med ID: {lokalAttTaBort.Namn} har en aktiv bokning. Du måste ta bort bokningen först ConsoleColor.Yellow");
+                goto noID;
+            }
+
+            Lokaler.Remove(lokalAttTaBort);
+
+            MethodRepository.PrintColor($"Lokal: {lokalAttTaBort.Namn} med ID: {lokalAttTaBort.ID} har tagits bort permanent");
 
             /* TODO: Välj en lokal att ta bort. Använd "Lokaler" listan i denna klassen.
                 Tips: Alla lokaler har ett unikt ID, använd den!
@@ -216,6 +275,8 @@ namespace Gruppuppgift_booking.lokaler
 
             // Den här ska vara kvar!
             SparaLokaler();
+
+            Program.ReturnFromMenu(MenyTyp.Lokaler);
         }
 
         // Rör ej, den här är den enda funktionen som behövs för att spara lokaler!
