@@ -91,7 +91,7 @@ namespace Gruppuppgift_booking.lokaler
             Console.Clear();
             MethodRepository.PrintColor("===NY BOKNING===", ConsoleColor.Cyan);
             
-            if (Lokal.Lokaler.Count < 1)
+            if (Lokal.Lokaler.Count < 1 || !Lokal.Lokaler.Any(x => x.Bokning == null))
             {
                 MethodRepository.PrintColor("Det finns inga lokaler att boka!", ConsoleColor.Red);
                 Program.ReturnFromMenu(MenyTyp.Bokningar);

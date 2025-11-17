@@ -29,9 +29,17 @@ namespace Gruppuppgift_booking
 
             if (FilHantering.ReadJson(out List<BookingData>? bokningar, out exc, Booking.FILENAME) && lokaler != null)
             {
+                var now = DateTime.Now;
                 foreach(var d in bokningar)
                 {
                     var book = new Booking(d.CustomerName, d.StartTime, d.EndTime);
+                    
+                    if (now.Subtract(book.StartTime).TotalSeconds > 0 || 
+                        now.Subtract(book.EndTime).TotalSeconds > 0)
+                    {
+                        continue;
+                    }
+
                     if (d.LokalID > 0)
                     {
                         var lokal = Lokal.Lokaler.FirstOrDefault(x => x.ID == d.LokalID);
@@ -43,6 +51,8 @@ namespace Gruppuppgift_booking
                     }
                     Booking.Bokningar.Add(book);
                 }
+
+                Booking.SparaBokningar();
             }
 
             Start();
