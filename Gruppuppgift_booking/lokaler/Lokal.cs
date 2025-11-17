@@ -218,10 +218,10 @@ namespace Gruppuppgift_booking.lokaler
                 goto noID;
             }
 
-            if (lokalAttTaBort != null)
+            if (lokalAttTaBort.Bokning != null)
             {
                 MethodRepository.PrintColor(
-                    $"Lokal med ID: {lokalAttTaBort.Namn} har en aktiv bokning. Du måste ta bort bokningen först ConsoleColor.Yellow");
+                    $"Lokalen: {lokalAttTaBort.Namn} har en aktiv bokning. Du måste ta bort bokningen först", ConsoleColor.Yellow);
                 goto noID;
             }
 
