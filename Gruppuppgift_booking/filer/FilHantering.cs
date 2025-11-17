@@ -9,6 +9,8 @@ namespace Gruppuppgift_booking.filer
 {
 	public static class FilHantering
 	{
+		public static string StandardFilPath { get; private set; } = AppContext.BaseDirectory;
+
 		/// <summary>
 		/// Läs in en fil från en specificerad path. Syntax: LäsFil("Fil.txt", "Mapp1", "Mapp2")
 		/// </summary>
@@ -17,12 +19,14 @@ namespace Gruppuppgift_booking.filer
 		/// <returns>Alla rader av text från filen.</returns>
 		public static string[] LäsFil(string filNamn)
 		{
-			if (!File.Exists(filNamn))
+			string path = Path.Combine(StandardFilPath, filNamn);
+
+			if (!File.Exists(path))
 			{
-				throw new FileNotFoundException($"Kunde ej hitta filen \"{filNamn}\"");
+				throw new FileNotFoundException($"Kunde ej hitta filen \"{filNamn}\" på platsen: {path}");
 			}
 
-			return File.ReadAllLines(filNamn);
+			return File.ReadAllLines(path);
 		}
 
 		/// <summary>
@@ -33,7 +37,8 @@ namespace Gruppuppgift_booking.filer
 		/// <param name="filPaths">Pathen till filen (Mappar). Använder sig av specifika platser med hjälp av StandardFilPath</param>
 		public static void SparaFil(string[] data, string filNamn)
 		{
-			File.WriteAllLines(filNamn, data);
+			string path = Path.Combine(StandardFilPath, filNamn);
+			File.WriteAllLines(path, data);
 		}
 
 
@@ -43,7 +48,7 @@ namespace Gruppuppgift_booking.filer
         };
         public static bool ReadJson<T>(out T? outer, out Exception? exc, params string[] paths)
         {
-            string path = Path.Combine(paths);
+			string path = Path.Combine(StandardFilPath, Path.Combine(paths));
             try
             {
                 StreamReader read = new(path);

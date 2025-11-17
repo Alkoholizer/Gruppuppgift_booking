@@ -337,7 +337,7 @@ namespace Gruppuppgift_booking.lokaler
 
             FilHantering.WriteJson
             (
-                FILENAME, 
+                Path.Combine(FilHantering.StandardFilPath, FILENAME), 
                 bookDatas, 
                 new System.Text.Json.JsonSerializerOptions()
                 {
