@@ -17,6 +17,8 @@ namespace Gruppuppgift_booking.lokaler
         abstract static void UpdateBooking();
 
         abstract static void CancelBooking();
+
+        abstract static void ListBookingsByYear();
     }
 
     public record BookingData
@@ -375,8 +377,38 @@ namespace Gruppuppgift_booking.lokaler
             Bokningar = [.. Bokningar.OrderBy(b => b)];
             Console.WriteLine("Bokningar sorterade alfabetiskt.");   // Sorterar bokningar i bokstavsordning
         }
-    
 
-    
-    }
+		public static void ListBookingsByYear()
+		{
+            Console.Clear();
+            MethodRepository.PrintColor("===LISTA BOKNINGAR PÅ ÅR===", ConsoleColor.Cyan);
+            
+		Redo:
+            Console.Write("\nAnge år att söka efter: ");
+            if (!int.TryParse(Console.ReadLine(), out int year))
+            {
+                MethodRepository.PrintColor("Ogiltigt år!", ConsoleColor.Red);
+                goto Redo;
+            }
+
+            List<Booking> booksInYear = [];
+            foreach(var book in Bokningar)
+            {
+                if (book.StartTime.Year == year)
+                {
+                    booksInYear.Add(book);
+                }
+            }
+
+            if (booksInYear.Count < 1)
+                MethodRepository.PrintColor("Inga bokningar på detta året!", ConsoleColor.Yellow);
+
+            foreach(var book in booksInYear)
+            {
+                Console.WriteLine(book.GetBookingData());
+            }
+            
+            Program.ReturnFromMenu(MenyTyp.Bokningar);
+		}
+	}
 }

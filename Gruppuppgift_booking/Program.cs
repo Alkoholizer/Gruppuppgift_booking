@@ -78,15 +78,17 @@ namespace Gruppuppgift_booking
                                 "\n2: Lista alla bokningar " +
                                 "\n3: Uppdatera bokning " +
                                 "\n4: Ta bort en bokning " +
+                                "\n5: Lista bokningar efter årsdatum " +
                                 "\n0: Gå tillbaka"
                                 );
 
-                switch (MenyVal(4))
+                switch (MenyVal(5))
                 {
                     case 1: Booking.NewBooking(); break;
                     case 2: Booking.VisaBokningar(false); break;
                     case 3: Booking.UpdateBooking(); break;
                     case 4: Booking.CancelBooking(); break;
+                    case 5: Booking.ListBookingsByYear(); break;
                     case 0: Console.Clear(); Start(); break;
                 }
             }
