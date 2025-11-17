@@ -259,21 +259,6 @@ namespace Gruppuppgift_booking.lokaler
                 }
             );
         }
-/*        private static bool UniqueCheck(string namn)
-        {
-            bool isUnique = true;
-            foreach (var lok in Lokaler)
-            {
-                if(namn == Namn)
-                {
-                    isUnique = false;
-                    break;
-                }
-            }
-            return isUnique;
-        }
-*/
-
     }
 
     public enum LokalTyp
