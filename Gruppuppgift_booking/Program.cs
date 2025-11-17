@@ -84,7 +84,7 @@ namespace Gruppuppgift_booking
                 switch (MenyVal(4))
                 {
                     case 1: Booking.NewBooking(); break;
-                    case 2: Booking.VisaBokningar(); break;
+                    case 2: Booking.VisaBokningar(false); break;
                     case 3: Booking.UpdateBooking(); break;
                     case 4: Booking.CancelBooking(); break;
                     case 0: Console.Clear(); Start(); break;
