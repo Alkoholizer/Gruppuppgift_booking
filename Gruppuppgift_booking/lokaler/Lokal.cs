@@ -107,6 +107,11 @@ namespace Gruppuppgift_booking.lokaler
                 MethodRepository.PrintColor("Lokaler", ConsoleColor.Cyan);
             }
 
+            if (Lokaler.Count < 1)
+            {
+                MethodRepository.PrintColor("Inga lokaler sparade!", ConsoleColor.Red);
+            }
+
             foreach(var lok in Lokaler)
             {
                 if (lok.Bokning != null && !visaBokade)
@@ -148,9 +153,10 @@ namespace Gruppuppgift_booking.lokaler
             }
 
         NoTyp:
-            Console.WriteLine("Vilken typ av lokal är det?");
+            Console.WriteLine("\nVilken typ av lokal är det?");
             Console.WriteLine("1. Sal");
             Console.WriteLine("2. Grupprum");
+            Console.Write("\nLokaltyp val: ");
             if (!int.TryParse(Console.ReadLine(), out int choice))
             {
                 MethodRepository.PrintColor("Ogiltig lokal typ!", ConsoleColor.Red);
@@ -177,7 +183,6 @@ namespace Gruppuppgift_booking.lokaler
                     goto NoTyp;
             }
 
-            Lokaler.Add(lokalObj);
             MethodRepository.PrintColor(
                 $"Lokal av typen: {lokalObj.Typ} med lokalnamn: {lokalObj.Namn} har nu skapats och sparats", ConsoleColor.Green);
             
@@ -193,8 +198,9 @@ namespace Gruppuppgift_booking.lokaler
             MethodRepository.PrintColor("===RADERING AV LOKALER===", ConsoleColor.Cyan);
 
             VisaLokaler(true, true);
+
         noID:
-            Console.Write("\n Ange ID på lokalen du vill ta bort (eller tryck ENTER för att avbryta): ");
+            Console.Write("\nAnge ID på lokalen du vill ta bort (eller tryck ENTER för att avbryta): ");
             string? idInput = Console.ReadLine();
             
             if (string.IsNullOrEmpty(idInput))

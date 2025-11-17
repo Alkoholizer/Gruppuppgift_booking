@@ -32,13 +32,15 @@ namespace Gruppuppgift_booking.lokaler
 
     public class Booking : IBookable
     {
-        private static int IncrementalID;
+        private static int IncrementalID = 0;
 
         public const string FILENAME = "bokningar.json";
 
         public Booking(string _customerName, DateTime start, DateTime end)
         {
-            ID = IncrementalID++;
+            IncrementalID++;
+            ID = IncrementalID;
+
             CustomerName = _customerName;
             StartTime = start;
             EndTime = end;
@@ -109,7 +111,7 @@ namespace Gruppuppgift_booking.lokaler
                        ["yyyy-MM-dd"],
                        new CultureInfo("en-SE"),
                        DateTimeStyles.None,
-                       out DateTime startdatum))
+                       out DateTime startdatum) || startdatum.Subtract(DateTime.Now).TotalSeconds <= 0)
                 goto RedoStart;
 
         RedoEnd:
@@ -119,7 +121,7 @@ namespace Gruppuppgift_booking.lokaler
                        ["yyyy-MM-dd"],
                        new CultureInfo("en-SE"),
                        DateTimeStyles.None,
-                       out DateTime slutdatum))
+                       out DateTime slutdatum) || startdatum.Subtract(slutdatum).TotalSeconds > 0)
                 goto RedoEnd;
             
             Console.WriteLine();
@@ -159,8 +161,10 @@ namespace Gruppuppgift_booking.lokaler
 		{
 		Redo:
             Console.Clear();
+            MethodRepository.PrintColor("===TA BORT BOKNING===", ConsoleColor.Cyan);
 
-            VisaBokningar();
+            VisaBokningar(true);
+
             Console.WriteLine("Skriv \"avbryt för att gå tillbaka.");
             MethodRepository.PrintColor($"Ange en lokal att boka (0-{Bokningar.Count}): ", ConsoleColor.Cyan);
 
@@ -176,7 +180,7 @@ namespace Gruppuppgift_booking.lokaler
                 Program.Start(MenyTyp.Bokningar);
                 return;
             }
-
+            
             if (!int.TryParse(input, out int bookingID) || 
                 Bokningar.FirstOrDefault(x => x.ID == bookingID) is not Booking book)
             {
@@ -196,23 +200,12 @@ namespace Gruppuppgift_booking.lokaler
 		{
 		Redo:
             Console.Clear();
+            MethodRepository.PrintColor("===UPPDATERA BOKNINGAR===", ConsoleColor.Cyan);
             
-            VisaBokningar();
+            VisaBokningar(true);
 
-            string? input = Console.ReadLine();
-            if (string.IsNullOrEmpty(input))
-            {
-                goto Redo;
-            }
-
-            if (input.ToLower() == "avbryt")
-            {
-                Console.Clear();
-                Program.Start(MenyTyp.Bokningar);
-                return;
-            }
-
-            if (!int.TryParse(input, out int bookingID) || 
+            Console.Write("\nAnge ID på en bokning att ändra: ");
+            if (!int.TryParse(Console.ReadLine(), out int bookingID) || 
                 Bokningar.FirstOrDefault(x => x.ID == bookingID) is not Booking book)
             {
                 MethodRepository.PrintColor("Ange ett giltigt boknings ID!", ConsoleColor.Red);
@@ -228,6 +221,7 @@ namespace Gruppuppgift_booking.lokaler
 	        Console.WriteLine("3: Sluttid");
 	        Console.WriteLine("4: Lokal");
 
+            Console.Write("Ändring val: ");
 	        if (!int.TryParse(Console.ReadLine(), out int choice))
 	        {
 		        MethodRepository.PrintColor("Du måste ange ett giltigt nummer!", ConsoleColor.Red);
@@ -246,14 +240,17 @@ namespace Gruppuppgift_booking.lokaler
 				    else
 				    {
 					    MethodRepository.PrintColor("Ogiltigt namn!", ConsoleColor.Red);
-                        return;
 				    }
 				    break;
 
 			    case BookingDataType.StartTid:
-				    Console.Write("Ange ny starttid (YYYY-MM-DD HH:MM): ");
-				    string? newStart = Console.ReadLine();
-				    if (DateTime.TryParse(newStart, out DateTime newStartTime))
+                    Console.Write("Ange ny starttid (yyyy-MM-dd): ");
+                    var newStart = Console.ReadLine();
+                    if (DateTime.TryParseExact(newStart,
+                               ["yyyy-MM-dd"],
+                               new CultureInfo("en-SE"),
+                               DateTimeStyles.None,
+                               out DateTime newStartTime) && DateTime.Now.Subtract(newStartTime).TotalSeconds < 0)
 				    {
 					    book.StartTime = newStartTime;
 					    Console.WriteLine("Starttid uppdaterad!");
@@ -261,14 +258,18 @@ namespace Gruppuppgift_booking.lokaler
 				    else
 				    {
 					    MethodRepository.PrintColor("Ogiltig starttid!", ConsoleColor.Red);
-                        return;
 				    }
 				    break;
 
 			    case BookingDataType.SlutTid:
-				    Console.Write("Ange ny sluttid (YYYY-MM-DD HH:MM): ");
-				    string? newEnd = Console.ReadLine();
-				    if (DateTime.TryParse(newEnd, out DateTime newEndTime))
+                    Console.Write("Ange ny sluttid (yyyy-MM-dd): ");
+                    var newEnd = Console.ReadLine();
+                    if (DateTime.TryParseExact(newEnd,
+                               ["yyyy-MM-dd"],
+                               new CultureInfo("en-SE"),
+                               DateTimeStyles.None,
+                               out DateTime newEndTime) && newEndTime.Subtract(book.StartTime).TotalSeconds > 0
+                    )
 				    {
 					    book.EndTime = newEndTime;
 					    Console.WriteLine("Sluttid uppdaterad!");
@@ -276,7 +277,6 @@ namespace Gruppuppgift_booking.lokaler
 				    else
 				    {
 					    MethodRepository.PrintColor("Ogiltig sluttid!", ConsoleColor.Red);
-                        return;
 				    }
 				    break;
 
@@ -295,25 +295,25 @@ namespace Gruppuppgift_booking.lokaler
 					    else
 					    {
 						    MethodRepository.PrintColor("Lokal hittades inte!", ConsoleColor.Red);
-                            return;
 					    }
 				    }
 				    else
 				    {
 					    MethodRepository.PrintColor("Ogiltigt ID!", ConsoleColor.Red);
-                        return;
 				    }
 				    break;
 
 			    default:
 				    MethodRepository.PrintColor("Ogiltigt val!", ConsoleColor.Red);
-                    return;
+                    break;
 		    }
 
 
             // Rör ej!
             Console.WriteLine(book.GetBookingData());
             SparaBokningar();
+
+            Program.ReturnFromMenu(MenyTyp.Bokningar);
 		}
         
         public enum BookingDataType
@@ -346,10 +346,14 @@ namespace Gruppuppgift_booking.lokaler
 
 
 
-        public static void VisaBokningar()
+        public static void VisaBokningar(bool fromOther)
         {
-            Console.Clear();
-            MethodRepository.PrintColor("===BOKADE LOKALER===", ConsoleColor.Cyan);
+            if (!fromOther)
+            {
+                Console.Clear();
+                MethodRepository.PrintColor("===BOKADE LOKALER===", ConsoleColor.Cyan);
+            }
+
             if (Bokningar.Count < 1)
             {
                 MethodRepository.PrintColor("Inga bokningar sparade!", ConsoleColor.Red);
@@ -362,7 +366,8 @@ namespace Gruppuppgift_booking.lokaler
                 Console.WriteLine(bokning.GetBookingData());
             }
 
-            Program.ReturnFromMenu(MenyTyp.Bokningar);
+            if (!fromOther)
+                Program.ReturnFromMenu(MenyTyp.Bokningar);
         }
 
         public static void SorteraBokningar()

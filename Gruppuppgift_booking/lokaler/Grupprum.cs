@@ -28,7 +28,7 @@ namespace Gruppuppgift_booking.lokaler
         public void GrupprumMaker()
         {
         Redo:
-            Console.WriteLine("Har grupprummet en soffa? Y/N?");
+            Console.WriteLine("Har grupprummet en soffa? (Y/N): ");
             string? pick = Console.ReadLine();
             
             if (string.IsNullOrEmpty(pick))
