@@ -194,7 +194,7 @@ namespace Gruppuppgift_booking.lokaler
 
             VisaLokaler(true, true);
         noID:
-            Console.Write("\n Ange ID på lokalen du vill ta bort (eller tryck ENTER för att avbryta");
+            Console.Write("\n Ange ID på lokalen du vill ta bort (eller tryck ENTER för att avbryta): ");
             string? idInput = Console.ReadLine();
             
             if (string.IsNullOrEmpty(idInput))
