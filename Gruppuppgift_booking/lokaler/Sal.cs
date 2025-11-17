@@ -28,7 +28,7 @@ namespace Gruppuppgift_booking.lokaler
         public void SalMaker()
         {
         Redo:
-            Console.WriteLine("Har salen en projektor? Y/N?");
+            Console.Write("Har salen en projektor? (Y/N): ");
             string? pick = Console.ReadLine();
             
             if (string.IsNullOrEmpty(pick))
