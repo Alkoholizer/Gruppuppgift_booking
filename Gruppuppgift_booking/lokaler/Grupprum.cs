@@ -45,7 +45,6 @@ namespace Gruppuppgift_booking.lokaler
                 default:
                     goto Redo;
             }
-            Soffa = soffa;
         }
 
     }

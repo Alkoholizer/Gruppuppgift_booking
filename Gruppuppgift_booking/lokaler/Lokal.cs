@@ -137,9 +137,7 @@ namespace Gruppuppgift_booking.lokaler
                 goto NoName;
             }
 
-            Console.WriteLine("Ange antal sittplatser i lokalen.");
-            int.TryParse(Console.ReadLine(), out int platser);
-
+        NoTyp:
             Console.WriteLine("Vilken typ av lokal är det?");
             Console.WriteLine("1. Sal");
             Console.WriteLine("2. Grupprum");
@@ -149,16 +147,14 @@ namespace Gruppuppgift_booking.lokaler
                 goto NoTyp;
             }
         noArea:
-            Console.WriteLine("Ange are i kvadratmeter");
+            Console.Write("\nAnge area i kvadratmeter: ");
             string? areaInput = Console.ReadLine();
-            double area;
 
-            if (!double.TryParse(areaInput, out area) || area <= 0)
+            if (!double.TryParse(areaInput, out double area) || area <= 0)
             {
                 MethodRepository.PrintColor("Ogiltigt värde för area, ange ett positivt nummer!", ConsoleColor.Red);
                 goto noArea;
             }
-        NoTyp:
 
 
             Lokal? lokalObj = null;
@@ -179,27 +175,7 @@ namespace Gruppuppgift_booking.lokaler
                     Console.WriteLine("Error: Ogiltigt val.");
                     break;
             }
-            /* TODO: Skapa en ny lokal och spara den i "Lokaler" listan i denna klassen.
-                Du måste också specificera om Lokalen är ett Grupprum eller en Sal!
-
-                Till Exempel:
-                    Välj lokalens namn här. Men om vi är ett grupprum, fråga användaren om lokalen har en soffa.
-                    För detta kan du använda dig av Grupprum klassen och köra en metod i denna metod.
-                    Ex: GrupprumMaker();
             
-                Det behövs ej att ange lokalens lokaltyp, det körs automatiskt när lokalerna skapas.
-                    Du kan kolla Grupprum och Sal konstruktors och se hur de fungerar.
-
-                Grupprum och Sal har konstruktors som kan användas för att skapa dem.
-                Ex:
-                    Grupprum nyGrupp = new Grupprum(NAMN, AREA);
-                    Sal nySal = new Sal(NAMN, AREA);
-            
-
-                GÖR NULL CHECKAR OCH FEL KOLLAR!
-
-                Booking.cs klassen har exempel på hur du kan skriva koden här.
-            */
             if (lokalObj != null)
             {
                 Lokaler.Add(lokalObj);
@@ -224,7 +200,7 @@ namespace Gruppuppgift_booking.lokaler
 
             VisaLokaler(true, frånBooking: true);
         noID:
-            Console.Write("\n Ange ID på lokalen du vill ta bort (eller tryck Enter för att avbryta");
+            Console.Write("\n Ange ID på lokalen du vill ta bort (eller tryck ENTER för att avbryta");
             string? idInput = Console.ReadLine();
             
             if (string.IsNullOrEmpty(idInput))
@@ -258,20 +234,6 @@ namespace Gruppuppgift_booking.lokaler
             Lokaler.Remove(lokalAttTaBort);
 
             MethodRepository.PrintColor($"Lokal: {lokalAttTaBort.Namn} med ID: {lokalAttTaBort.ID} har tagits bort permanent");
-
-            /* TODO: Välj en lokal att ta bort. Använd "Lokaler" listan i denna klassen.
-                Tips: Alla lokaler har ett unikt ID, använd den!
-                    I Booking klassen används en LINQ metod som heter "FirstOrDefault, kolla hur den används!
-
-                Extra: Om en Lokal har en bokning, måste du också ta bort den bokningen!
-                    När den bokningen är borttagen, kör Booking.SparaBokningar(); metoden.
-            
-
-                GÖR NULL CHECKAR OCH FEL KOLLAR!
-
-                Booking.cs klassen har exempel på hur du kan skriva koden här.
-            */
-
 
             // Den här ska vara kvar!
             SparaLokaler();
